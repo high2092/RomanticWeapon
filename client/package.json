@@ -1,0 +1,21 @@
+{
+  "name": "romanticweapon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack server --mode development --open --hot",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/high2092/RomanticWeapon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/high2092/RomanticWeapon/issues"
+  },
+  "homepage": "https://github.com/high2092/RomanticWeapon#readme"
+}
