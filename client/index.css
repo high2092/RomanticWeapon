@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import 'reset.css';
 
 * {
   font-family: 'Jua', sans-serif;
