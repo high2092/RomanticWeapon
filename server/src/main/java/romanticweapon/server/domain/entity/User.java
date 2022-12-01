@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 @Entity
 public class User implements UserDetails {
     @Id
-    @Column(updatable = false, unique = true, nullable = false)
+    @Column(updatable = false, unique = true, nullable = false, length = 32)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String password;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
@@ -39,6 +38,11 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return userId;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
