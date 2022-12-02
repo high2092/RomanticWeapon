@@ -10,15 +10,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import romanticweapon.server.handler.OAuth2SuccessHandler;
+import romanticweapon.server.service.OAuth2UserServiceImpl;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -27,11 +30,20 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/user/register").permitAll()
+                .antMatchers("/user/login", "/user/register", "/auth/**").permitAll()
                 .antMatchers("/user/main").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .oauth2Login();
+//                .userInfoEndpoint()
+//                .userService(new OAuth2UserServiceImpl());
+//        http
+//                .oauth2Login()
+//                .successHandler(oAuth2SuccessHandler);
+
         return http.build();
     }
 
