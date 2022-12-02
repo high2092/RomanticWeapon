@@ -41,6 +41,9 @@ dependencies {
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.5'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 //	runtimeOnly 'mysql:mysql-connector-java'
+
+	// Oauth
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

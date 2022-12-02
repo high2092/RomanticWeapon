@@ -1,6 +1,24 @@
 spring:
   profiles:
     active: local
+  OAuth2:
+    google:
+      url: https://accounts.google.com/o/oauth2/v2/auth
+      client-id: 536621338256-o26l886k00265kcqtdgei2shgdh1dud6.apps.googleusercontent.com
+      client-secret: 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
+      redirect_uri: http://localhost:8080/auth/google/callback
+      scope: https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 536621338256-o26l886k00265kcqtdgei2shgdh1dud6.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
+# OAuth
 
 ---
 spring:
@@ -15,7 +33,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

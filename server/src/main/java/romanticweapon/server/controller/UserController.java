@@ -9,25 +9,27 @@ import romanticweapon.server.domain.dto.TokenInfo;
 import romanticweapon.server.domain.dto.request.UserLoginRequestDto;
 import romanticweapon.server.domain.dto.request.UserRegisterRequestDto;
 import romanticweapon.server.service.UserService;
+import romanticweapon.server.util.SecurityUtil;
 
 import javax.validation.Valid;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
-
     @PostMapping("/login")
     public TokenInfo login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
-        return userService.login(userLoginRequestDto.getUserId(), userLoginRequestDto.getPassword());
+        return userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword());
     }
 
-    @GetMapping("/main")
-    public String isLogin() {
-        return "OK";
+    @GetMapping("/check-login")
+    public Boolean isLogin() {
+        String currentUserId = SecurityUtil.getCurrentUserId();
+        log.info("{}", currentUserId);
+        if(currentUserId.equals("anonymousUser")) return false;
+        return true;
     }
 
     @PostMapping("/register")
