@@ -47,7 +47,7 @@ public class UserService {
             }
 
             TokenInfo login = login(userRegisterRequestDto.getId(), userRegisterRequestDto.getPassword());
-            return login.getGrantType() + " " + login.getAccessToken();
+            return login.getAccessToken();
         }
 
         if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {

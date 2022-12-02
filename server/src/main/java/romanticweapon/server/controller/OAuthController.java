@@ -1,11 +1,10 @@
 package romanticweapon.server.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +19,7 @@ import romanticweapon.server.service.OAuthService;
 import romanticweapon.server.service.UserService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,9 +39,10 @@ public class OAuthController {
     }
 
     @GetMapping("/auth/{socialLoginType}/callback")
-    public String callback(
+    public ResponseEntity<?> callback(
             @PathVariable(name = "socialLoginType") String socialLoginPath,
-            @RequestParam(name = "code") String code
+            @RequestParam(name = "code") String code,
+            HttpServletResponse response
             ) throws Exception {
         ResponseEntity<String> stringResponseEntity = googleOAuth.requestAccessToken(code);
         GoogleOAuthToken accessToken = googleOAuth.getAccessToken(stringResponseEntity);
@@ -55,9 +56,12 @@ public class OAuthController {
                 .isOAuth(true)
                 .username(userInfo.getName())
                 .build());
+        Cookie cookie = new Cookie("accessToken", token);
+        cookie.setMaxAge(24 * 60 * 60); // 1 day
+        cookie.setHttpOnly(true);
 
-        System.out.println("token = " + token);
+        response.addCookie(cookie);
 
-        return "OK";
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
