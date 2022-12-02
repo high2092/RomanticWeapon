@@ -41,7 +41,7 @@ public class UserService {
             throw new Exception("이미 존재하는 게정입니다.");
         }
 
-        if(userRepository.findByNickName(userRegisterRequestDto.getNickName()).isPresent()) {
+        if(userRepository.findByUsername(userRegisterRequestDto.getUsername()).isPresent()) {
             throw new Exception("이미 존재하는 닉네임입니다");
         }
 

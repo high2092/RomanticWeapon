@@ -30,7 +30,8 @@ public class User implements UserDetails {
     private String password;
 
     @Column(length = 12)
-    private String nickName;
+    private String username;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
