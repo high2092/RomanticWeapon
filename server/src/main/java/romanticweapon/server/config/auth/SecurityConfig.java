@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/login", "/test/**").permitAll()
+                .antMatchers("/user/login", "/user/register").permitAll()
                 .antMatchers("/user/main").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
