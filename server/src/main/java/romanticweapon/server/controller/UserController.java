@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping("/login")
     public TokenInfo login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
-        return userService.login(userLoginRequestDto.getUserId(), userLoginRequestDto.getPassword());
+        return userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword());
     }
 
     @GetMapping("/main")

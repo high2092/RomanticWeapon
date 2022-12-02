@@ -20,13 +20,13 @@ public class UserRegisterRequestDto {
     private String password;
 
     @Size(min = 2, max = 12, message = "닉네임은 2글자 이상 12글자 이하여야 합니다.")
-    private String nickName;
+    private String username;
 
     public User toEntity() {
         return User.builder()
                 .userId(id)
                 .password(password)
-                .nickName(nickName)
+                .username(username)
                 .role(Role.USER)
                 .build();
     }
