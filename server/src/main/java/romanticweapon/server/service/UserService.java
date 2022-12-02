@@ -37,6 +37,19 @@ public class UserService {
 
     @Transactional
     public String register(UserRegisterRequestDto userRegisterRequestDto) throws Exception {
+        if(userRegisterRequestDto.getIsOAuth() == true) {
+            if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {
+
+            }
+            else {
+                User user = userRepository.save(userRegisterRequestDto.toEntity());
+                user.encodePassword(passwordEncoder);
+            }
+
+            TokenInfo login = login(userRegisterRequestDto.getId(), userRegisterRequestDto.getPassword());
+            return login.getGrantType() + " " + login.getAccessToken();
+        }
+
         if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {
             throw new Exception("이미 존재하는 게정입니다.");
         }

@@ -1,7 +1,9 @@
 package romanticweapon.server.domain.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.enumm.Role;
 
@@ -11,6 +13,7 @@ import java.util.Collections;
 
 @Getter
 @Setter
+@Builder
 public class UserRegisterRequestDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
@@ -22,6 +25,8 @@ public class UserRegisterRequestDto {
     @Size(min = 2, max = 12, message = "닉네임은 2글자 이상 12글자 이하여야 합니다.")
     private String username;
 
+    @JsonIgnore
+    private Boolean isOAuth = false;
     public User toEntity() {
         return User.builder()
                 .userId(id)
