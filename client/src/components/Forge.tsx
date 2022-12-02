@@ -33,9 +33,9 @@ const Forge = () => {
 
     setLogs([
       ...logs,
-      `${level} 단계에서 ${formatChance(successChance)}의 확률로 강화에 ${
-        success ? '성공' : '실패'
-      }했어요.`,
+      `${level} 단계에서 ${formatChance(
+        success ? successChance : 1 - successChance
+      )}의 확률로 강화에 ${success ? '성공' : '실패'}했어요.`,
     ]);
   }, [reload]);
 
