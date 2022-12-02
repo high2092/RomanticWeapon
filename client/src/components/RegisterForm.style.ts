@@ -20,7 +20,7 @@ export const RegisterForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  jusitfy-content: center;
+  justify-content: center;
   width: max-content;
   height: max-content;
   padding: 2rem;
@@ -48,4 +48,16 @@ export const RegisterButton = styled.button`
 export const RegisterTitle = styled.div`
   font-size: 1.2rem;
   text-align: center;
+`;
+
+export const HelpText = styled.div`
+  margin: auto;
+  width: 6rem;
+
+  word-break: keep-all;
+
+  margin-left: 0.5rem;
+
+  font-size: 0.7rem;
+  color: #d00000;
 `;
