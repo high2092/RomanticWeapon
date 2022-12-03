@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './Forge.style';
-import refineSound from '../assets/refine.mp3';
-import refineAnimation from '../assets/refine.gif';
-import refineSuccessSound from '../assets/refine-success.mp3';
-import refineFailureSound from '../assets/refine-failure.mp3';
-
+import refineAnimationUrl from '../assets/refine.gif';
+import {
+  refineSound,
+  refineSuccessSound,
+  refineFailureSound,
+} from '../constants/constants';
 const Results = {
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',
@@ -16,22 +17,18 @@ const formatChance = (chance: number) => {
   return (chance * 100).toFixed(0) + '%';
 };
 
-const audio = new Audio(refineSound);
-const audioSuccess = new Audio(refineSuccessSound);
-const audioFailure = new Audio(refineFailureSound);
-
 const Assets = {
   [Results.SUCCESS]: {
     Level: (level: number) => level + 1,
     Log: (successChance: number) =>
       `${formatChance(successChance)}의 확률로 강화에 성공했어요.`,
-    Sound: audioSuccess,
+    Sound: refineSuccessSound,
   },
   [Results.FAILED]: {
     Level: (level: number) => level - 1,
     Log: (successChance: number) =>
       `${formatChance(1 - successChance)}의 확률로 강화에 실패했어요.`,
-    Sound: audioFailure,
+    Sound: refineFailureSound,
   },
 };
 
@@ -45,7 +42,7 @@ const Forge = () => {
 
   const successChance = 1 - 0.05 * level;
 
-  audio.onended = () => {
+  refineSound.onended = () => {
     setReload(!reload);
   };
 
@@ -63,7 +60,7 @@ const Forge = () => {
 
   const handleTryButtonClick = () => {
     setShowDimmed(true);
-    audio.play();
+    refineSound.play();
     const dice = Math.random();
     const result = dice <= successChance ? Results.SUCCESS : Results.FAILED;
     setResult(result);
@@ -93,7 +90,7 @@ const Forge = () => {
       {showDimmed && (
         <>
           <Dimmed handleDimmedClick={() => {}} zIndex={10} />
-          <S.RefineAnimation src={refineAnimation} zIndex={11} />
+          <S.RefineAnimation src={refineAnimationUrl} zIndex={11} />
         </>
       )}
     </>
