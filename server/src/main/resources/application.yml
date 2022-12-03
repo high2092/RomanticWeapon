@@ -48,7 +48,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://3.85.162.4:3306/romantic_weapon?useUnicode=yes&characterEncoding=UTF-8
     username: romantic
-    password: 1234
+    password: weapon
   jpa:
     open-in-view: false
     hibernate:
