@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: alpha
   OAuth2:
     google:
       url: https://accounts.google.com/o/oauth2/v2/auth
@@ -46,9 +46,9 @@ spring:
       on-profile: alpha
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.0.88:3306/romantic_weapon?useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mariadb://3.86.252.148:3306/romantic_weapon?useUnicode=yes&characterEncoding=UTF-8
     username: romantic
-    password: weapon
+    password: 1234
   jpa:
     open-in-view: false
     hibernate:

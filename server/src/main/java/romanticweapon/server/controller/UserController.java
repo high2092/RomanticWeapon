@@ -18,6 +18,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
