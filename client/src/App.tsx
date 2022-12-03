@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import { PrivateRoutes } from './components/routes/PrivateRoutes';
+import { RegisterPage } from './pages/RegisterPage';
 import { BGMController } from './components/BGMController';
 
 function App() {
