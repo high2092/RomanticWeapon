@@ -46,7 +46,7 @@ spring:
       on-profile: alpha
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://3.86.252.148:3306/romantic_weapon?useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mariadb://3.85.162.4:3306/romantic_weapon?useUnicode=yes&characterEncoding=UTF-8
     username: romantic
     password: 1234
   jpa:
