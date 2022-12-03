@@ -28,6 +28,7 @@ public class UserController {
         cookie.setMaxAge(24 * 60 * 60); // 1 day
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return new ResponseEntity<>(HttpStatus.OK);
     }
