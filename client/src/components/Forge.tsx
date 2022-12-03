@@ -2,22 +2,49 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Forge.style';
 import refineSound from '../assets/refine.mp3';
 import refineAnimation from '../assets/refine.gif';
+import refineSuccessSound from '../assets/refine-success.mp3';
+import refineFailureSound from '../assets/refine-failure.mp3';
+
+const Results = {
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+} as const;
+
+type Results = typeof Results[keyof typeof Results];
+
+const formatChance = (chance: number) => {
+  return (chance * 100).toFixed(0) + '%';
+};
+
+const audio = new Audio(refineSound);
+const audioSuccess = new Audio(refineSuccessSound);
+const audioFailure = new Audio(refineFailureSound);
+
+const Assets = {
+  [Results.SUCCESS]: {
+    Level: (level: number) => level + 1,
+    Log: (successChance: number) =>
+      `${formatChance(successChance)}의 확률로 강화에 성공했어요.`,
+    Sound: audioSuccess,
+  },
+  [Results.FAILED]: {
+    Level: (level: number) => level - 1,
+    Log: (successChance: number) =>
+      `${formatChance(1 - successChance)}의 확률로 강화에 실패했어요.`,
+    Sound: audioFailure,
+  },
+};
 
 const Forge = () => {
   const [level, setLevel] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
   const [maxLevel, setMaxLevel] = useState(0);
   const [showDimmed, setShowDimmed] = useState(false);
-  const [success, setSuccess] = useState<boolean>();
+  const [result, setResult] = useState<Results>();
   const [reload, setReload] = useState(false);
 
   const successChance = 1 - 0.05 * level;
 
-  const formatChance = (chance: number) => {
-    return (chance * 100).toFixed(0) + '%';
-  };
-
-  const audio = new Audio(refineSound);
   audio.onended = () => {
     setReload(!reload);
   };
@@ -27,24 +54,19 @@ const Forge = () => {
   }, [reload]);
 
   useEffect(() => {
-    if (success === undefined) return;
-    if (success) setLevel(level + 1);
-    else setLevel(level - 1);
+    if (result === undefined) return;
 
-    setLogs([
-      ...logs,
-      `${level} 단계에서 ${formatChance(
-        success ? successChance : 1 - successChance
-      )}의 확률로 강화에 ${success ? '성공' : '실패'}했어요.`,
-    ]);
+    setLevel(Assets[result].Level(level));
+    setLogs([...logs, Assets[result].Log(successChance)]);
+    Assets[result].Sound.play();
   }, [reload]);
 
   const handleTryButtonClick = () => {
     setShowDimmed(true);
     audio.play();
     const dice = Math.random();
-    const succeed = dice <= successChance;
-    setSuccess(succeed);
+    const result = dice <= successChance ? Results.SUCCESS : Results.FAILED;
+    setResult(result);
   };
 
   useEffect(() => {
