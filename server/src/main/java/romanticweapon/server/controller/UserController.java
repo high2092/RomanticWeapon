@@ -28,10 +28,8 @@ public class UserController {
 //        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
         ResponseCookie cookie = ResponseCookie.from("accessToken", login.getAccessToken())
                 .path("/")
-                .secure(true)
                 .httpOnly(true)
-                .sameSite("None")
-                .domain("http://27.96.135.22:3000")
+                .domain("http://27.96.135.22")
                 .maxAge(24 * 60 * 60)
                 .build();
         response.setHeader("Set-Cookie", cookie.toString());
