@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Forge.style';
 import refineSound from '../assets/refine.mp3';
 import refineAnimation from '../assets/refine.gif';
+import refineSuccessSound from '../assets/refine-success.mp3';
+import refineFailureSound from '../assets/refine-failure.mp3';
 
 const Results = {
   SUCCESS: 'SUCCESS',
@@ -14,16 +16,22 @@ const formatChance = (chance: number) => {
   return (chance * 100).toFixed(0) + '%';
 };
 
+const audio = new Audio(refineSound);
+const audioSuccess = new Audio(refineSuccessSound);
+const audioFailure = new Audio(refineFailureSound);
+
 const Assets = {
   [Results.SUCCESS]: {
     Level: (level: number) => level + 1,
     Log: (successChance: number) =>
       `${formatChance(successChance)}의 확률로 강화에 성공했어요.`,
+    Sound: audioSuccess,
   },
   [Results.FAILED]: {
     Level: (level: number) => level - 1,
     Log: (successChance: number) =>
       `${formatChance(1 - successChance)}의 확률로 강화에 실패했어요.`,
+    Sound: audioFailure,
   },
 };
 
@@ -37,7 +45,6 @@ const Forge = () => {
 
   const successChance = 1 - 0.05 * level;
 
-  const audio = new Audio(refineSound);
   audio.onended = () => {
     setReload(!reload);
   };
@@ -51,6 +58,7 @@ const Forge = () => {
 
     setLevel(Assets[result].Level(level));
     setLogs([...logs, Assets[result].Log(successChance)]);
+    Assets[result].Sound.play();
   }, [reload]);
 
   const handleTryButtonClick = () => {
