@@ -1,13 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './LoginForm.style';
+import { bgm } from '../constants/constants';
 
 const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleLoginButtonClick = () => {
     const loginSuccess = true;
-    if (loginSuccess) navigate('/');
+    if (loginSuccess) {
+      bgm.play();
+      navigate('/');
+    }
   };
 
   return (
