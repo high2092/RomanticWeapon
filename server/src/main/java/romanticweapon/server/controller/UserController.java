@@ -3,6 +3,7 @@ package romanticweapon.server.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import romanticweapon.server.domain.dto.TokenInfo;
@@ -24,11 +25,22 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) {
         TokenInfo login = userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword());
-        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
-        cookie.setMaxAge(24 * 60 * 60); // 1 day
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
+        ResponseCookie cookie = ResponseCookie.from("accessToken", login.getAccessToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(24 * 60 * 60)
+                .build();
+        response.setHeader("Set-Cookie", cookie.toString());
+
+
+//        cookie.setMaxAge(24 * 60 * 60); // 1 day
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+//        cookie.setSecure(true);
+//        response.addCookie(cookie);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
