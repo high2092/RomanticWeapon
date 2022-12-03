@@ -27,6 +27,7 @@ public class UserController {
         Cookie cookie = new Cookie("accessToken", login.getAccessToken());
         cookie.setMaxAge(24 * 60 * 60); // 1 day
         cookie.setHttpOnly(true);
+        cookie.setPath("/");
         response.addCookie(cookie);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -56,6 +56,7 @@ public class OAuthController {
         Cookie cookie = new Cookie("accessToken", token);
         cookie.setMaxAge(24 * 60 * 60); // 1 day
         cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
         response.addCookie(cookie);
 
