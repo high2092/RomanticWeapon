@@ -31,6 +31,7 @@ public class UserController {
                 .secure(true)
                 .httpOnly(true)
                 .sameSite("None")
+                .domain("http://27.96.135.22:3000")
                 .maxAge(24 * 60 * 60)
                 .build();
         response.setHeader("Set-Cookie", cookie.toString());
