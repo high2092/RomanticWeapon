@@ -18,12 +18,6 @@ spring:
             scope:
               - email
               - profile
-# OAuth
-server:
-  servlet:
-    session:
-      cookie:
-        same-site: none
 ---
 spring:
   config:
