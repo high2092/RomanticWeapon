@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin("*")
 public class OAuthController {
 
     private final OAuthService oAuthService;
