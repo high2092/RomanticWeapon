@@ -28,21 +28,21 @@ public class UserController {
         cookie.setMaxAge(24 * 60 * 60); // 1 day
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/check-login")
-    public Boolean isLogin() {
+    public ResponseEntity<?> isLogin() {
         String currentUserId = SecurityUtil.getCurrentUserId();
         log.info("{}", currentUserId);
-        if(currentUserId.equals("anonymousUser")) return false;
-        return true;
+        if(currentUserId.equals("anonymousUser")) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.OK)
-    public String register(@Valid @RequestBody UserRegisterRequestDto request) throws Exception {
-        return userService.register(request);
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequestDto request) throws Exception {
+        userService.register(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
