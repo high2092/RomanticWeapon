@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack server --mode development --open --hot",
+    "dev": "export NODE_ENV=development && webpack server --mode development --open --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
