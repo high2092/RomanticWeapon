@@ -25,6 +25,10 @@ public class Weapon {
 
     private Long price;
 
-    private String weaponImage;
+    private String name;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WEAPON_IMAGE_ID")
+    private WeaponImage weaponImage;
 
 }
