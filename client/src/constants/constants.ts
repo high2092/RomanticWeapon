@@ -7,3 +7,5 @@ export const refineSound = new Audio(refineSoundUrl);
 export const refineSuccessSound = new Audio(refineSuccessSoundUrl);
 export const refineFailureSound = new Audio(refineFailureSoundUrl);
 export const bgm = new Audio(bgmUrl);
+
+console.log(process.env.HOST);
