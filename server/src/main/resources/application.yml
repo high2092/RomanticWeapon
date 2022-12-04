@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: alpha
   OAuth2:
     google:
       url: https://accounts.google.com/o/oauth2/v2/auth
@@ -35,7 +35,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+custom:
+  server-url: localhost:8080
 ---
 
 spring:
@@ -54,6 +55,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+custom:
+  server-url: 3.85.162.4:8080
 
 ---
 
