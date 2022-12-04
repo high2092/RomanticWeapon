@@ -25,21 +25,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) {
         TokenInfo login = userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword());
-//        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
-        ResponseCookie cookie = ResponseCookie.from("accessToken", login.getAccessToken())
-                .path("/")
-                .httpOnly(true)
-                .domain("http://27.96.135.22")
-                .maxAge(24 * 60 * 60)
-                .build();
-        response.setHeader("Set-Cookie", cookie.toString());
+        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
+        cookie.setMaxAge(24 * 60 * 60); // 1 day
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
+        response.addCookie(cookie);
 
-//        cookie.setMaxAge(24 * 60 * 60); // 1 day
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-//        cookie.setSecure(true);
-//        response.addCookie(cookie);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
