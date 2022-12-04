@@ -30,9 +30,9 @@ public class EnforceController {
 
         Weapon enforce = enforceService.enforce(userByAuthentication);
 
-        Boolean isSuccess = false;
-        if(beforeWeapon.getUpgrade() > enforce.getUpgrade()) isSuccess = false;
-        else isSuccess = true;
+        String isSuccess = "FAILURE";
+        if(beforeWeapon.getUpgrade() > enforce.getUpgrade()) isSuccess = "FAILURE";
+        else isSuccess = "SUCCESS";
 
         RefineResponseDto refineResponseDto = new RefineResponseDto(
                 enforce.getType(),

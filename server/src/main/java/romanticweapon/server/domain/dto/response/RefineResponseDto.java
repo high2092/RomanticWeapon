@@ -16,9 +16,9 @@ public class RefineResponseDto {
     String name;
     String filePath;
 
-    Boolean isSuccess;
+    String result;
 
-    public RefineResponseDto(WeaponType type, Long upgrade, Long refineCost, int chance, Long price, String name, String filePath, Boolean isSuccess) {
+    public RefineResponseDto(WeaponType type, Long upgrade, Long refineCost, int chance, Long price, String name, String filePath, String isSuccess) {
         this.type = type;
         this.level = upgrade;
         this.cost = refineCost;
@@ -26,7 +26,7 @@ public class RefineResponseDto {
         this.price = price;
         this.name = name;
         this.filePath = filePath;
-        this.isSuccess = isSuccess;
+        this.result = isSuccess;
     }
 }
 
