@@ -12,6 +12,9 @@ import romanticweapon.server.domain.dto.oauth.TokenInfo;
 import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.repository.UserRepository;
+import romanticweapon.server.util.SecurityUtil;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,5 +65,11 @@ public class UserService {
         user.encodePassword(passwordEncoder);
 
         return user.getUserId();
+    }
+
+    @Transactional
+    public User findUserByAuthentication() {
+        String currentUserId = SecurityUtil.getCurrentUserId();
+        return userRepository.findByUsername(currentUserId).get();
     }
 }
