@@ -4,6 +4,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import { HOST } from '../constants/constants';
+import { httpPost } from '../utils/utils';
 
 const TextContent = {
   id: '아이디',
@@ -32,20 +34,6 @@ const schema = yup.object().shape({
     .max(12, TextContent.helpTextUsernameLength),
 });
 
-const HOST = 'http://localhost:8000';
-
-const httpPost = async (url: string, payload: FieldValues) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    // credentials: 'include',
-    // headers: {
-    //   'Content-Type': 'application/json',
-    // }
-    body: JSON.stringify(payload),
-  });
-  return response;
-};
-
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const {
@@ -62,7 +50,7 @@ export const RegisterForm = () => {
 
     console.log(body);
     try {
-      const response = await httpPost(HOST, body);
+      const response = await httpPost(`${HOST}/register`, body);
       if (response.status === 200) {
         navigate('/login');
       }
