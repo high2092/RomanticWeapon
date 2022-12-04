@@ -1,4 +1,4 @@
-package romanticweapon.server.service;
+package romanticweapon.server.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;

@@ -1,4 +1,4 @@
-package romanticweapon.server.controller;
+package romanticweapon.server.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -7,13 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import romanticweapon.server.domain.dto.request.UserRegisterRequestDto;
-import romanticweapon.server.domain.enumm.OAuthType;
-import romanticweapon.server.domain.oauth.GoogleOAuth;
-import romanticweapon.server.domain.oauth.GoogleOAuthToken;
-import romanticweapon.server.domain.oauth.GoogleUser;
-import romanticweapon.server.service.OAuthService;
-import romanticweapon.server.service.UserService;
+import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
+import romanticweapon.server.domain.enumm.auth.OAuthType;
+import romanticweapon.server.domain.dto.oauth.GoogleOAuth;
+import romanticweapon.server.domain.dto.oauth.GoogleOAuthToken;
+import romanticweapon.server.domain.dto.oauth.GoogleUser;
+import romanticweapon.server.service.auth.OAuthService;
+import romanticweapon.server.service.auth.UserService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;

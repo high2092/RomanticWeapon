@@ -1,4 +1,4 @@
-package romanticweapon.server.service;
+package romanticweapon.server.service.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import romanticweapon.server.config.auth.JwtTokenProvider;
-import romanticweapon.server.domain.enumm.OAuthType;
-import romanticweapon.server.domain.oauth.GoogleOAuth;
-import romanticweapon.server.domain.oauth.GoogleOAuthToken;
-import romanticweapon.server.domain.oauth.GoogleUser;
+import romanticweapon.server.domain.enumm.auth.OAuthType;
+import romanticweapon.server.domain.dto.oauth.GoogleOAuth;
+import romanticweapon.server.domain.dto.oauth.GoogleOAuthToken;
+import romanticweapon.server.domain.dto.oauth.GoogleUser;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static romanticweapon.server.domain.enumm.OAuthType.GOOGLE;
+import static romanticweapon.server.domain.enumm.auth.OAuthType.GOOGLE;
 
 @Service
 @RequiredArgsConstructor

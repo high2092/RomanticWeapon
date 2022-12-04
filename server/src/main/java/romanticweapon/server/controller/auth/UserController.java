@@ -1,15 +1,14 @@
-package romanticweapon.server.controller;
+package romanticweapon.server.controller.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import romanticweapon.server.domain.dto.TokenInfo;
-import romanticweapon.server.domain.dto.request.UserLoginRequestDto;
-import romanticweapon.server.domain.dto.request.UserRegisterRequestDto;
-import romanticweapon.server.service.UserService;
+import romanticweapon.server.domain.dto.oauth.TokenInfo;
+import romanticweapon.server.domain.dto.request.auth.UserLoginRequestDto;
+import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
+import romanticweapon.server.service.auth.UserService;
 import romanticweapon.server.util.SecurityUtil;
 
 import javax.servlet.http.Cookie;
