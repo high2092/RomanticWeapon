@@ -3,6 +3,7 @@ import { FieldValues } from 'react-hook-form';
 export const httpGet = async (url: string) => {
   const response = await fetch(url, {
     method: 'GET',
+    credentials: 'include',
   });
   return response;
 };
