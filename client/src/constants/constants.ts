@@ -2,6 +2,8 @@ import refineSoundUrl from '../assets/refine.mp3';
 import refineSuccessSoundUrl from '../assets/refine-success.mp3';
 import refineFailureSoundUrl from '../assets/refine-failure.mp3';
 import bgmUrl from '../assets/bgm.mp3';
+import mapleSwordImgUrl from '../assets/weapon20.png';
+import styled from 'styled-components';
 
 const DEFAULT_BGM_VOLUME = 0.04;
 const REFINE_VOLUME = 0.04;
@@ -20,6 +22,9 @@ refineFailureSound.volume = REFINE_FAILURE_VOLUME;
 export const bgm = new Audio(bgmUrl);
 bgm.volume = DEFAULT_BGM_VOLUME;
 bgm.loop = true;
+
+export const mapleSwordImg = new Image();
+mapleSwordImg.src = mapleSwordImgUrl;
 
 export const HOST =
   process.env.NODE_ENV === 'production'
