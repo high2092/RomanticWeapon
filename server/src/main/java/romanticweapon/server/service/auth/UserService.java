@@ -1,6 +1,7 @@
 package romanticweapon.server.service.auth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -88,6 +90,7 @@ public class UserService {
     @Transactional
     public User findUserByAuthentication() {
         String currentUserId = SecurityUtil.getCurrentUserId();
-        return userRepository.findByUsername(currentUserId).get();
+        log.info("current user : {}", currentUserId);
+        return userRepository.findByUserId(currentUserId).get();
     }
 }
