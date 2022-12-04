@@ -2,6 +2,7 @@ package romanticweapon.server.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,6 +26,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                 .antMatchers("/login", "/register", "/auth/**", "/check-login", "/image/**").permitAll()
                 .antMatchers("/user/main").hasRole("USER")
 
