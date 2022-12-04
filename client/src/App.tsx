@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import { PrivateRoutes } from './components/routes/PrivateRoutes';
 import { RegisterPage } from './pages/RegisterPage';
 import { BGMController } from './components/BGMController';
+import { RestrictedRoutes } from './components/routes/RestrictedRoutes';
 
 function App() {
   return (
@@ -15,8 +16,10 @@ function App() {
           <Route path="/" element={<PrivateRoutes />}>
             <Route index element={<MainPage />} />
           </Route>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage/>}/>
+          <Route path="/" element={<RestrictedRoutes />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </>
