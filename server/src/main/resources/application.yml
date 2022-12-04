@@ -35,6 +35,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
 custom:
   server-url: localhost:8080
 ---
@@ -52,22 +63,11 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+
 custom:
   server-url: http://3.85.162.4:8080
 
 ---
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa

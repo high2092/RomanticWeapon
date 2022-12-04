@@ -31,11 +31,11 @@ public class EnforceController {
         User userByAuthentication = userService.findUserByAuthentication();
 
         Weapon beforeWeapon = enforceService.getWeaponByUser(userByAuthentication);
-
+        Long beforeUp = beforeWeapon.getUpgrade();
         Weapon enforce = enforceService.enforce(userByAuthentication);
 
         String isSuccess = "FAILURE";
-        if(beforeWeapon.getUpgrade() > enforce.getUpgrade()) isSuccess = "FAILURE";
+        if(beforeUp >= enforce.getUpgrade()) isSuccess = "FAILURE";
         else isSuccess = "SUCCESS";
 
         RefineResponseDto refineResponseDto = new RefineResponseDto(
