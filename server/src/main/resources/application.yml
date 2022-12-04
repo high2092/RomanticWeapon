@@ -56,7 +56,7 @@ spring:
       hibernate:
         format_sql: true
 custom:
-  server-url: 3.85.162.4:8080
+  server-url: http://3.85.162.4:8080
 
 ---
 
