@@ -3,7 +3,9 @@ package romanticweapon.server.domain.dto.request.auth;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.enumm.auth.Role;
+import romanticweapon.server.util.staticc.WeaponConstant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -33,6 +35,7 @@ public class UserRegisterRequestDto {
                 .password(password)
                 .username(username)
                 .role(Role.USER)
+                .gold(99999999L)
                 .build();
     }
 }
