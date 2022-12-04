@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import romanticweapon.server.domain.dto.request.weapon.RefineRequestDto;
 import romanticweapon.server.domain.dto.response.RefineResponseDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
@@ -22,7 +24,7 @@ public class EnforceController {
     private final UserService userService;
 
     @PostMapping("/refine")
-    public ResponseEntity<?> enforce() throws Exception {
+    public ResponseEntity<?> enforce(@RequestBody RefineRequestDto refineRequestDto) throws Exception {
         // 누가 요청했는지 알아야함
         User userByAuthentication = userService.findUserByAuthentication();
 
