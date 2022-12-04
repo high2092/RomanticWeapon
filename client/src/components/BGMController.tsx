@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { bgm } from '../constants/constants';
 import * as S from './BGMController.style';
 
-const DEFAULT_BGM_VOLUME = 0.5;
-bgm.volume = DEFAULT_BGM_VOLUME;
-bgm.loop = true;
-
 export const BGMController = () => {
   const [playBGM, setPlayBGM] = useState(true);
 
