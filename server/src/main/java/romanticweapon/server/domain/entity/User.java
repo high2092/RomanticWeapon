@@ -1,6 +1,7 @@
 package romanticweapon.server.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
@@ -27,6 +29,9 @@ public class User implements UserDetails {
 
     @Column(length = 12)
     private String username;
+
+    @Column(columnDefinition = "LONG DEFAULT 99999")
+    private Long gold;
 
     @Enumerated(EnumType.STRING)
     private Role role;
