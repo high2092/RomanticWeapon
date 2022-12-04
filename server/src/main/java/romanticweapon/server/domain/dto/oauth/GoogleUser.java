@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.oauth;
+package romanticweapon.server.domain.dto.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

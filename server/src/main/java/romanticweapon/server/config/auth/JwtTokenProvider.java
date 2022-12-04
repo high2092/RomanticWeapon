@@ -1,6 +1,5 @@
 package romanticweapon.server.config.auth;
 
-import antlr.Token;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -13,9 +12,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import romanticweapon.server.domain.dto.TokenInfo;
+import romanticweapon.server.domain.dto.oauth.TokenInfo;
 
-import java.lang.reflect.Array;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;

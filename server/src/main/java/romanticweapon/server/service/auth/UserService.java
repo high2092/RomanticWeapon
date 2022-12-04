@@ -1,4 +1,4 @@
-package romanticweapon.server.service;
+package romanticweapon.server.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,8 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import romanticweapon.server.config.auth.JwtTokenProvider;
-import romanticweapon.server.domain.dto.TokenInfo;
-import romanticweapon.server.domain.dto.request.UserRegisterRequestDto;
+import romanticweapon.server.domain.dto.oauth.TokenInfo;
+import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.repository.UserRepository;
 

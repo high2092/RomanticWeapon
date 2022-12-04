@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.enumm;
+package romanticweapon.server.domain.enumm.auth;
 
 public enum OAuthType {
     GOOGLE,

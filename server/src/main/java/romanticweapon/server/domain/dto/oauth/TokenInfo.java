@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.dto;
+package romanticweapon.server.domain.dto.oauth;
 
 import lombok.*;
 

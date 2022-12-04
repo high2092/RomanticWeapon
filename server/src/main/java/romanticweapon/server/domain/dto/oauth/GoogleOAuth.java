@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.oauth;
+package romanticweapon.server.domain.dto.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

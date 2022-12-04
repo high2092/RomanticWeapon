@@ -1,14 +1,12 @@
-package romanticweapon.server.domain.dto.request;
+package romanticweapon.server.domain.dto.request.auth;
 
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import romanticweapon.server.domain.entity.User;
-import romanticweapon.server.domain.enumm.Role;
+import romanticweapon.server.domain.enumm.auth.Role;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Collections;
 
 @Getter
 @Setter
