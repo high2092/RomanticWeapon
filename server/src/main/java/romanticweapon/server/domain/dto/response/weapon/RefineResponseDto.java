@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.dto.response;
+package romanticweapon.server.domain.dto.response.weapon;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
