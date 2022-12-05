@@ -45,7 +45,8 @@ public class EnforceController {
                 enforce.getName(),
                 enforce.getWeaponImage().getFilePath(),
                 isSuccess,
-                userByAuthentication.getGold()
+                userByAuthentication.getGold(),
+                (int) Math.round((1 - beforeUp * 0.05) * 100)
         );
         return new ResponseEntity<>(refineResponseDto, HttpStatus.OK);
     }
