@@ -97,7 +97,7 @@ public class EnforceService {
                 .build();
 
         user.setGold(user.getGold() + weapon.getPrice());
-
+        userRepository.save(user);
         weaponRepository.delete(weapon);
 
         return weaponRepository.save(newWeapon);
