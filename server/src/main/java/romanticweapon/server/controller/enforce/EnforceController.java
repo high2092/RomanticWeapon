@@ -35,7 +35,11 @@ public class EnforceController {
         String isSuccess = "FAILURE";
         if(beforeUp >= enforce.getUpgrade()) isSuccess = "FAILURE";
         else isSuccess = "SUCCESS";
-
+        Boolean achieve = false;
+        if(isSuccess.equals("SUCCESS") && userByAuthentication.getTargetUpgrade() <= enforce.getUpgrade()) {
+            achieve = true;
+            userService.setAchievement(userByAuthentication, enforce.getUpgrade());
+        }
         RefineResponseDto refineResponseDto = new RefineResponseDto(
                 enforce.getType(),
                 enforce.getUpgrade(),
@@ -46,7 +50,8 @@ public class EnforceController {
                 enforce.getWeaponImage().getFilePath(),
                 isSuccess,
                 userByAuthentication.getGold(),
-                (int) Math.round((1 - beforeUp * 0.05) * 100)
+                (int) Math.round((1 - beforeUp * 0.05) * 100),
+                achieve
         );
         return new ResponseEntity<>(refineResponseDto, HttpStatus.OK);
     }

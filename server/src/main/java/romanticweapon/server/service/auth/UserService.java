@@ -93,4 +93,10 @@ public class UserService {
         log.info("current user : {}", currentUserId);
         return userRepository.findByUserId(currentUserId).get();
     }
+
+    @Transactional
+    public void setAchievement(User user, Long upgrade) {
+        user.setTargetUpgrade(upgrade);
+        userRepository.save(user);
+    }
 }
