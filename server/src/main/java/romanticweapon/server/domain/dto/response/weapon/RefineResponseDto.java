@@ -22,8 +22,10 @@ public class RefineResponseDto {
 
     int prevChance;
 
+    Boolean achievement;
+
     @Builder
-    public RefineResponseDto(WeaponType type, Long level, Long cost, int chance, Long price, String name, String filePath, String result, Long gold, int prevChance) {
+    public RefineResponseDto(WeaponType type, Long level, Long cost, int chance, Long price, String name, String filePath, String result, Long gold, int prevChance, Boolean achievement) {
         this.type = type;
         this.level = level;
         this.cost = cost;
@@ -34,6 +36,7 @@ public class RefineResponseDto {
         this.result = result;
         this.gold = gold;
         this.prevChance = prevChance;
+        this.achievement = achievement;
     }
 }
 

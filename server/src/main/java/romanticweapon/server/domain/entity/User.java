@@ -36,6 +36,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(columnDefinition = "LONG DEFAULT 1")
+    private Long targetUpgrade;
+
     @Override
     public String getUsername() {
         return userId;
