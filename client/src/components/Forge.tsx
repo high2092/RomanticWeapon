@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './Forge.style';
 import refineAnimationUrl from '../assets/refine.gif';
 import {
@@ -7,7 +7,7 @@ import {
   refineFailureSound,
   HOST,
 } from '../constants/constants';
-import { httpPost } from '../utils/utils';
+import { httpGet, httpPost } from '../utils/utils';
 
 const Results = {
   SUCCESS: 'SUCCESS',
@@ -23,7 +23,7 @@ const httpPostRefine = async () => {
 };
 
 const formatChance = (chance: number) => {
-  return (chance * 100).toFixed(0) + '%';
+  return chance + '%';
 };
 
 const generateLog = (chance: number, result: Results) => {
@@ -43,6 +43,12 @@ interface RefineResult {
   gold: number;
   prevChance: number;
 }
+
+const httpGetWeapon = async () => {
+  const response = await httpGet(`${HOST}/weapon`);
+  const weapon = await response.json();
+  return weapon;
+};
 
 const Forge = () => {
   const [level, setLevel] = useState<number>();
@@ -70,8 +76,10 @@ const Forge = () => {
     setWeaponName(name);
     setGold(gold);
     setImageUrl(filePath);
-    setLogs([...logs, generateLog(prevChance, result)]);
 
+    if (result === undefined) return;
+
+    setLogs([...logs, generateLog(prevChance, result)]);
     result === Results.SUCCESS
       ? refineSuccessSound.play()
       : refineFailureSound.play();
@@ -84,9 +92,13 @@ const Forge = () => {
       setTimeout(() => {
         update(refineResult);
         setShowDimmed(false);
-      }, 3000);
+      }, 0);
     });
   };
+
+  useEffect(() => {
+    httpGetWeapon().then(update);
+  }, []);
 
   return (
     <>
