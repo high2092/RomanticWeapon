@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import romanticweapon.server.domain.dto.request.weapon.RefineRequestDto;
-import romanticweapon.server.domain.dto.response.RefineResponseDto;
-import romanticweapon.server.domain.dto.response.WeaponInfoResponseDto;
+import romanticweapon.server.domain.dto.response.weapon.RefineResponseDto;
+import romanticweapon.server.domain.dto.response.weapon.WeaponInfoResponseDto;
+import romanticweapon.server.domain.dto.response.weapon.WeaponSellResponseDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.service.auth.UserService;
 import romanticweapon.server.service.enforce.EnforceService;
-import romanticweapon.server.util.SecurityUtil;
-
-import java.sql.Ref;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,6 +68,28 @@ public class EnforceController {
                 userByAuthentication.getGold()
         );
         return new ResponseEntity<>(refineResponseDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/sell")
+    public ResponseEntity<?> sellCurrentWeapon() {
+        User userByAuthentication = userService.findUserByAuthentication();
+        Weapon weapon = enforceService.getWeaponByUser(userByAuthentication);
+
+        Weapon weaponAfterSell = enforceService.sellWeapon(userByAuthentication, weapon);
+
+        return new ResponseEntity<WeaponSellResponseDto>(
+                WeaponSellResponseDto.builder()
+                        .level(weaponAfterSell.getUpgrade())
+                        .cost(weaponAfterSell.getEnforceCost())
+                        .gold(userByAuthentication.getGold())
+                        .type(weaponAfterSell.getType())
+                        .name(weaponAfterSell.getName())
+                        .chance((int) Math.round((1 - weaponAfterSell.getUpgrade() * 0.05) * 100))
+                        .price(weaponAfterSell.getPrice())
+                        .filePath(weaponAfterSell.getWeaponImage().getFilePath())
+                        .build()
+                , HttpStatus.OK
+        );
     }
 
 }
