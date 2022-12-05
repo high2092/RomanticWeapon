@@ -1,6 +1,7 @@
 package romanticweapon.server.domain.dto.response.weapon;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
@@ -19,7 +20,10 @@ public class RefineResponseDto {
     String result;
     Long gold;
 
-    public RefineResponseDto(WeaponType type, Long level, Long cost, int chance, Long price, String name, String filePath, String result, Long gold) {
+    int prevChance;
+
+    @Builder
+    public RefineResponseDto(WeaponType type, Long level, Long cost, int chance, Long price, String name, String filePath, String result, Long gold, int prevChance) {
         this.type = type;
         this.level = level;
         this.cost = cost;
@@ -29,6 +33,7 @@ public class RefineResponseDto {
         this.filePath = filePath;
         this.result = result;
         this.gold = gold;
+        this.prevChance = prevChance;
     }
 }
 
