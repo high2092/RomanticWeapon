@@ -12,6 +12,7 @@ import romanticweapon.server.repository.WeaponRepository;
 import romanticweapon.server.util.SecurityUtil;
 import romanticweapon.server.util.staticc.WeaponConstant;
 
+import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Random;
 
@@ -45,9 +46,8 @@ public class EnforceService {
         user.setGold(user.getGold() - weapon.getEnforceCost());
 
         userRepository.save(user);
-        long seed = System.currentTimeMillis();
-        Random random = new Random(seed);
-        random.setSeed(seed);
+//        long seed = System.currentTimeMillis();
+        Random random = new SecureRandom();
         double number = random.nextDouble();//     0.0 ~ 1.0
 
         Long currentWeaponUpgrade = weapon.getUpgrade();
