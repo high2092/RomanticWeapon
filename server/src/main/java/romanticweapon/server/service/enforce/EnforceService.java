@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
+import romanticweapon.server.domain.enumm.weapon.WeaponType;
 import romanticweapon.server.repository.UserRepository;
 import romanticweapon.server.repository.WeaponImageRepository;
 import romanticweapon.server.repository.WeaponRepository;
@@ -27,7 +28,7 @@ public class EnforceService {
         Optional<Weapon> byUser = weaponRepository.findByUser(user);
         if (byUser.isEmpty()) {
             /* todo : 유저 무기 없음 */
-            return byUser.get();
+            return null;
         } else {
             return byUser.get();
         }
@@ -81,6 +82,25 @@ public class EnforceService {
             weaponRepository.save(upgradedWeapon);
             return upgradedWeapon;
         }
+    }
+
+    @Transactional
+    public Weapon sellWeapon(User user, Weapon weapon) {
+        Weapon newWeapon = Weapon.builder()
+                .enforceCost(Long.valueOf(WeaponConstant.SWORD_ENFORCE[0]))
+                .weaponImage(weaponImageRepository.findByTypeAndUpgrade(WeaponType.SWORD, 0L).get())
+                .type(WeaponType.SWORD)
+                .name(WeaponConstant.SWORD_NAME[0])
+                .price(WeaponConstant.SWORD_PRICE[0])
+                .user(user)
+                .upgrade(0L)
+                .build();
+
+        user.setGold(user.getGold() + weapon.getPrice());
+
+        weaponRepository.delete(weapon);
+
+        return weaponRepository.save(newWeapon);
     }
 //    public
 }
