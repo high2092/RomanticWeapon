@@ -68,7 +68,10 @@ public class EnforceService {
             return upgradedWeapon;
         }
         else {
-            Long nextUpgrade = weapon.getUpgrade() - 1L;
+            Long nextUpgrade = weapon.getUpgrade();
+            if(weapon.getUpgrade() % 5 != 0) {
+                nextUpgrade = nextUpgrade - 1L;
+            }
             Weapon upgradedWeapon = Weapon.builder()
                     .upgrade((long) nextUpgrade)
                     .enforceCost((long) WeaponConstant.SWORD_ENFORCE[Math.toIntExact(nextUpgrade)])

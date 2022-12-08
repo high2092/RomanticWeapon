@@ -38,7 +38,7 @@ public class EnforceController {
         Boolean achieve = false;
         if(isSuccess.equals("SUCCESS") && userByAuthentication.getTargetUpgrade() <= enforce.getUpgrade()) {
             achieve = true;
-            userService.setAchievement(userByAuthentication, enforce.getUpgrade());
+            userService.setAchievement(userByAuthentication, enforce.getUpgrade() + 1L);
         }
         RefineResponseDto refineResponseDto = new RefineResponseDto(
                 enforce.getType(),

@@ -35,7 +35,9 @@ public class UserRegisterRequestDto {
                 .password(password)
                 .username(username)
                 .role(Role.USER)
+                .targetUpgrade(1L)
                 .gold(99999999L)
                 .build();
     }
+
 }
