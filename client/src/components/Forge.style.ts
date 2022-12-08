@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Forge = styled.div`
   display: flex;
@@ -86,4 +86,39 @@ export const WeaponImage = styled.img`
 
 export const SizedText = styled.div<{ fontSize: string }>`
   font-size: ${(props) => props.fontSize};
+`;
+
+const fadein = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+`;
+
+export const Test = styled.div<{ fontSize: number }>`
+  transform: translateX(-20rem);
+  font-size: ${(props) => props.fontSize / 5}rem;
+  transition: all 1s;
+  animation: ${fadein} 1s;
+`;
+
+export const Achivement = styled.div`
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 4rem;
+  animation: ${fadein} 2.1s;
 `;
