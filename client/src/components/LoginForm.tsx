@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './LoginForm.style';
-import { bgm, HOST } from '../constants/constants';
+import { HOST } from '../constants/constants';
 import { httpPost } from '../utils/utils';
 import { useForm, FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
@@ -23,7 +23,7 @@ const schema = yup.object().shape({
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,
@@ -36,7 +36,6 @@ const LoginForm = () => {
   const loginSubmit = async (body: FieldValues) => {
     const response = await httpPost(`${HOST}/login`, body);
     if (response.status === 200) {
-      bgm.play();
       navigate('/');
     }
   };
@@ -44,8 +43,8 @@ const LoginForm = () => {
   return (
     <S.LoginForm onSubmit={handleSubmit(loginSubmit)}>
       <S.Logo>로맨틱 웨폰</S.Logo>
-      <input {...register('id')}/>
-      <input {...register('password')}/>
+      <input {...register('id')} />
+      <input {...register('password')} />
       <button>로그인</button>
     </S.LoginForm>
   );
