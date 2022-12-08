@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './Forge.style';
 import refineAnimationUrl from '../assets/refine.gif';
 import {
   refineSound,
   refineSuccessSound,
   refineFailureSound,
+  achievementSound,
   HOST,
 } from '../constants/constants';
 import { httpGet, httpPost } from '../utils/utils';
@@ -26,10 +27,10 @@ const formatChance = (chance: number) => {
   return chance + '%';
 };
 
-const generateLog = (chance: number, result: Results) => {
-  return `${chance}%의 확률로 강화에 ${
-    result === Results.SUCCESS ? '성공' : '실패'
-  }했어요.`;
+const generateLog = (chance: number, level: number, result: Results) => {
+  return `${chance}%의 확률로 +${
+    level + Number(result !== Results.SUCCESS)
+  } 강화에 ${result === Results.SUCCESS ? '성공' : '실패'}했어요.`;
 };
 
 interface RefineResult {
@@ -42,6 +43,7 @@ interface RefineResult {
   filePath: string;
   gold: number;
   prevChance: number;
+  achievement: boolean;
 }
 
 const httpGetWeapon = async () => {
@@ -59,6 +61,7 @@ const Forge = () => {
   const [gold, setGold] = useState<number>();
   const [chance, setChance] = useState<number>();
   const [imageUrl, setImageUrl] = useState<string>('');
+  const timeoutRef = useRef<any>(null);
 
   const update = ({
     result,
@@ -69,6 +72,7 @@ const Forge = () => {
     gold,
     filePath,
     prevChance,
+    achievement,
   }: RefineResult) => {
     setLevel(level);
     setCost(cost);
@@ -79,10 +83,23 @@ const Forge = () => {
 
     if (result === undefined) return;
 
-    setLogs([...logs, generateLog(prevChance, result)]);
+    setLogs([...logs, generateLog(prevChance, level, result)]);
     result === Results.SUCCESS
       ? refineSuccessSound.play()
       : refineFailureSound.play();
+
+    if (achievement) {
+      clearTimeout(timeoutRef.current);
+      setAchivement(false);
+      setMaxLevel(level);
+      setTimeout(() => {
+        achievementSound().play();
+        setAchivement(true);
+      }, 100);
+      timeoutRef.current = setTimeout(() => {
+        setAchivement(false);
+      }, 2000);
+    }
   };
 
   const handleTryButtonClick = () => {
@@ -92,17 +109,23 @@ const Forge = () => {
       setTimeout(() => {
         update(refineResult);
         setShowDimmed(false);
-      }, 0);
+      }, 100);
     });
   };
+
+  const [maxLevel, setMaxLevel] = useState(0);
 
   useEffect(() => {
     httpGetWeapon().then(update);
   }, []);
 
+  const [achivement, setAchivement] = useState(false);
+
   return (
     <>
       <S.Forge>
+        {achivement && <S.Achivement>{maxLevel}강 달성!</S.Achivement>}
+
         <S.LogsContainer>
           <S.Logs>
             {logs.map((log, idx) => (
