@@ -4,14 +4,12 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import { PrivateRoutes } from './components/routes/PrivateRoutes';
 import { RegisterPage } from './pages/RegisterPage';
-import { BGMController } from './components/BGMController';
 import { RestrictedRoutes } from './components/routes/RestrictedRoutes';
 import { ShopPage } from './pages/ShopPage';
 
 function App() {
   return (
     <>
-      <BGMController />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PrivateRoutes />}>

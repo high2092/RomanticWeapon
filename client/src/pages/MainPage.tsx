@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Forge from '../components/Forge';
 import * as S from './MainPage.style';
 import { useNavigate } from 'react-router-dom';
+import { mainBgm } from '../constants/constants';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -9,6 +10,14 @@ const MainPage = () => {
   const handleShopButtonClick = () => {
     navigate('/shop');
   };
+
+  useEffect(() => {
+    const bgm = mainBgm();
+    bgm.play();
+    return () => {
+      bgm.pause();
+    };
+  }, []);
 
   return (
     <S.MainPage>
