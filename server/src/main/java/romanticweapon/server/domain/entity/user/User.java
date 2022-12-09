@@ -1,4 +1,4 @@
-package romanticweapon.server.domain.entity;
+package romanticweapon.server.domain.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,8 +13,6 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor
 @Entity
 public class User implements UserDetails {
     @Id
@@ -30,14 +28,25 @@ public class User implements UserDetails {
     @Column(length = 12)
     private String username;
 
-    @Column(columnDefinition = "LONG DEFAULT 99999")
-    private Long gold;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(columnDefinition = "LONG DEFAULT 1")
     private Long targetUpgrade;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_inventory_id")
+    private UserInventory userInventory;
+
+    @Builder
+    public User(String userId, String password, String username, Role role, Long targetUpgrade, UserInventory userInventory) {
+        this.userId = userId;
+        this.password = password;
+        this.username = username;
+        this.role = role;
+        this.targetUpgrade = targetUpgrade;
+        this.userInventory = userInventory;
+    }
 
     @Override
     public String getUsername() {
