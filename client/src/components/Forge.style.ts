@@ -1,6 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
 export const Forge = styled.div`
+  position: relative;
+  top: 0;
+  left: 0;
   display: flex;
   width: 60rem;
   height: 30rem;
@@ -121,4 +124,18 @@ export const Achivement = styled.div`
 
   font-size: 4rem;
   animation: ${fadein} 2.1s;
+`;
+
+export const RefineResultAnimation = styled.img`
+  position: absolute;
+  top: -30%;
+  left: 68.5%;
+  width: 14rem;
+`;
+
+export const RefineSuccessAnimation = styled.img`
+  position: absolute;
+  top: -47%;
+  left: 64%;
+  width: 21rem;
 `;

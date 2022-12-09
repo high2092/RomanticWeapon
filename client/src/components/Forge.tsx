@@ -9,6 +9,8 @@ import {
   HOST,
 } from '../constants/constants';
 import { httpGet, httpPost } from '../utils/utils';
+import refineSuccessAnimationUrl from '../assets/refine-success.gif';
+import refineFailureAnimationUrl from '../assets/refine-failure.gif';
 
 const Results = {
   SUCCESS: 'SUCCESS',
@@ -63,6 +65,12 @@ const Forge = () => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const timeoutRef = useRef<any>(null);
 
+  const [showSuccessEffect, setShowSuccessEffect] = useState(false);
+  const [showFailureEffect, setShowFailureEffect] = useState(false);
+
+  const successTimeoutRef = useRef<any>(0);
+  const failureTimeoutRef = useRef<any>(0);
+
   const update = ({
     result,
     level,
@@ -87,6 +95,26 @@ const Forge = () => {
     result === Results.SUCCESS
       ? refineSuccessSound.play()
       : refineFailureSound.play();
+
+    if (result === Results.SUCCESS) {
+      clearTimeout(successTimeoutRef.current);
+      setShowSuccessEffect(false);
+      setTimeout(() => {
+        setShowSuccessEffect(true);
+      }, 100);
+      successTimeoutRef.current = setTimeout(() => {
+        setShowSuccessEffect(false);
+      }, 800);
+    } else {
+      clearTimeout(failureTimeoutRef.current);
+      setShowFailureEffect(false);
+      setTimeout(() => {
+        setShowFailureEffect(true);
+      }, 100);
+      failureTimeoutRef.current = setTimeout(() => {
+        setShowFailureEffect(false);
+      }, 800);
+    }
 
     if (achievement) {
       clearTimeout(timeoutRef.current);
@@ -125,7 +153,6 @@ const Forge = () => {
     <>
       <S.Forge>
         {achivement && <S.Achivement>{maxLevel}강 달성!</S.Achivement>}
-
         <S.LogsContainer>
           <S.Logs>
             {logs.map((log, idx) => (
@@ -134,6 +161,12 @@ const Forge = () => {
           </S.Logs>
         </S.LogsContainer>
         <S.WeaponSection>
+          {showSuccessEffect && (
+            <S.RefineSuccessAnimation src={refineSuccessAnimationUrl} />
+          )}
+          {showFailureEffect && (
+            <S.RefineResultAnimation src={refineFailureAnimationUrl} />
+          )}
           <S.WeaponImage src={imageUrl} />
           <S.SizedText fontSize="1.6rem">{weaponName}</S.SizedText>
           <S.SizedText fontSize="1.5rem">현재 재련 단계: +{level}</S.SizedText>
