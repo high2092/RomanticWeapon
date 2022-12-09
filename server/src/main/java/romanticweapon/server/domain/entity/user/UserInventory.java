@@ -14,18 +14,18 @@ public class UserInventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "LONG DEFAULT 0")
-    private int protectShield;
+    private int idx;
 
-    @Column(columnDefinition = "LONG DEFAULT 99999")
-    private Long gold;
+    private int amount;
 
-    @OneToOne(mappedBy = "userInventory")
+    @OneToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @Builder
-    public UserInventory(int protectShield, Long gold) {
-        this.protectShield = protectShield;
-        this.gold = gold;
+    public UserInventory(int idx, int amount, User user) {
+        this.idx = idx;
+        this.amount = amount;
+        this.user = user;
     }
 }

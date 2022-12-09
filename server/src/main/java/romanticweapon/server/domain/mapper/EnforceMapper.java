@@ -18,7 +18,7 @@ public class EnforceMapper {
                 enforce.getName(),
                 enforce.getWeaponImage().getFilePath(),
                 isSuccess,
-                userByAuthentication.getUserInventory().getGold(),
+                userByAuthentication.getGold(),
                 (int) Math.round((1 - beforeUp * 0.05) * 100),
                 achieve
         );
@@ -34,7 +34,7 @@ public class EnforceMapper {
                 beforeWeapon.getPrice(),
                 beforeWeapon.getName(),
                 beforeWeapon.getWeaponImage().getFilePath(),
-                userByAuthentication.getUserInventory().getGold()
+                userByAuthentication.getGold()
         );
         return refineResponseDto;
     }

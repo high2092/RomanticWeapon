@@ -69,7 +69,7 @@ public class EnforceController {
                 WeaponSellResponseDto.builder()
                         .level(weaponAfterSell.getUpgrade())
                         .cost(weaponAfterSell.getEnforceCost())
-                        .gold(userByAuthentication.getUserInventory().getGold())
+                        .gold(userByAuthentication.getGold())
                         .type(weaponAfterSell.getType())
                         .name(weaponAfterSell.getName())
                         .chance((int) Math.round((1 - weaponAfterSell.getUpgrade() * 0.05) * 100))

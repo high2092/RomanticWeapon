@@ -7,6 +7,7 @@ import romanticweapon.server.domain.dto.request.weapon.RefineRequestDto;
 import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.domain.entity.weapon.Weapon;
+import romanticweapon.server.domain.enumm.item.ItemCode;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
 import romanticweapon.server.exception.exception.NoSuchItemException;
 import romanticweapon.server.exception.exception.NotEnoughGoldException;
@@ -14,6 +15,7 @@ import romanticweapon.server.repository.auth.UserRepository;
 import romanticweapon.server.repository.inventory.UserInventoryRepository;
 import romanticweapon.server.repository.weapon.WeaponImageRepository;
 import romanticweapon.server.repository.weapon.WeaponRepository;
+import romanticweapon.server.util.staticc.Item;
 import romanticweapon.server.util.staticc.WeaponConstant;
 
 import java.security.SecureRandom;
@@ -50,24 +52,24 @@ public class EnforceService {
     }
 
     private void validateShield(User user, RefineRequestDto refineRequestDto) {
-        if(refineRequestDto.getShield() == true) {
-            UserInventory userInventory = user.getUserInventory();
-            if(userInventory.getProtectShield() <= 0) {
+        if(refineRequestDto.getUse().contains(ItemCode.PROTECT_SHIELD.getValue())) {
+            UserInventory userInventory = userInventoryRepository
+                    .findByIdx(ItemCode.PROTECT_SHIELD.getValue())
+                    .get();
+            if(userInventory.getAmount() <= 0) {
                 throw new NoSuchItemException("보유한 프로텍트 실드가 없습니다.");
             }
-            userInventory.setProtectShield(userInventory.getProtectShield() - 1);
+            userInventory.setAmount(userInventory.getAmount() - 1);
             userInventoryRepository.save(userInventory);
         }
     }
 
     private void payEnforceGoldFromUser(User user, Weapon weapon) {
-        if (user.getUserInventory().getGold() < weapon.getEnforceCost()) {
+        if (user.getGold() < weapon.getEnforceCost()) {
             throw new NotEnoughGoldException("골드가 부족합니다.");
         }
-        UserInventory userInventory = user.getUserInventory();
-        userInventory.setGold(user.getUserInventory().getGold() - weapon.getEnforceCost());
+        user.setGold(user.getGold() - weapon.getEnforceCost());
         userRepository.save(user);
-        userInventoryRepository.save(userInventory);
     }
 
     private Weapon getResultWeapon(User user, Weapon weapon, Long nextUpgrade) {
@@ -91,7 +93,7 @@ public class EnforceService {
             nextUpgrade = nextUpgrade + 1L;
         }
         else {
-            if(weapon.getUpgrade() % 5 != 0 && refineRequestDto.getShield() == false) {
+            if(weapon.getUpgrade() % 5 != 0 && !(refineRequestDto.getUse().contains(ItemCode.PROTECT_SHIELD.getValue()))) {
                 nextUpgrade = nextUpgrade - 1L;
             }
         }
