@@ -3,7 +3,7 @@ package romanticweapon.server.domain.mapper;
 import org.springframework.stereotype.Component;
 import romanticweapon.server.domain.dto.response.weapon.RefineResponseDto;
 import romanticweapon.server.domain.dto.response.weapon.WeaponInfoResponseDto;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 
 @Component
@@ -18,7 +18,7 @@ public class EnforceMapper {
                 enforce.getName(),
                 enforce.getWeaponImage().getFilePath(),
                 isSuccess,
-                userByAuthentication.getGold(),
+                userByAuthentication.getUserInventory().getGold(),
                 (int) Math.round((1 - beforeUp * 0.05) * 100),
                 achieve
         );
@@ -34,7 +34,7 @@ public class EnforceMapper {
                 beforeWeapon.getPrice(),
                 beforeWeapon.getName(),
                 beforeWeapon.getWeaponImage().getFilePath(),
-                userByAuthentication.getGold()
+                userByAuthentication.getUserInventory().getGold()
         );
         return refineResponseDto;
     }

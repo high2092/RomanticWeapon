@@ -3,11 +3,15 @@ package romanticweapon.server.service.enforce;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.dto.request.weapon.RefineRequestDto;
+import romanticweapon.server.domain.entity.user.User;
+import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
+import romanticweapon.server.exception.exception.NoSuchItemException;
 import romanticweapon.server.exception.exception.NotEnoughGoldException;
 import romanticweapon.server.repository.auth.UserRepository;
+import romanticweapon.server.repository.inventory.UserInventoryRepository;
 import romanticweapon.server.repository.weapon.WeaponImageRepository;
 import romanticweapon.server.repository.weapon.WeaponRepository;
 import romanticweapon.server.util.staticc.WeaponConstant;
@@ -24,6 +28,7 @@ public class EnforceService {
     private final WeaponImageRepository weaponImageRepository;
 
     private final UserRepository userRepository;
+    private final UserInventoryRepository userInventoryRepository;
     @Transactional
     public Weapon getWeaponByUser(User user) {
         Optional<Weapon> byUser = weaponRepository.findByUser(user);
@@ -31,7 +36,8 @@ public class EnforceService {
     }
 
     @Transactional
-    public Weapon enforce(User user) {
+    public Weapon enforce(User user, RefineRequestDto refineRequestDto) {
+        validateShield(user, refineRequestDto);
         Weapon weapon = getWeaponByUser(user);
 
         payEnforceGoldFromUser(user, weapon);
@@ -39,18 +45,29 @@ public class EnforceService {
         double number = random.nextDouble();//     0.0 ~ 1.0
 
         Long currentWeaponUpgrade = weapon.getUpgrade();
-        Long nextUpgrade = getNextUpgrade(weapon, number, 1 - currentWeaponUpgrade * 0.05);
+        Long nextUpgrade = getNextUpgrade(weapon, number, 1 - currentWeaponUpgrade * 0.05, refineRequestDto);
         return getResultWeapon(user, weapon, nextUpgrade);
     }
 
+    private void validateShield(User user, RefineRequestDto refineRequestDto) {
+        if(refineRequestDto.getShield() == true) {
+            UserInventory userInventory = user.getUserInventory();
+            if(userInventory.getProtectShield() <= 0) {
+                throw new NoSuchItemException("보유한 프로텍트 실드가 없습니다.");
+            }
+            userInventory.setProtectShield(userInventory.getProtectShield() - 1);
+            userInventoryRepository.save(userInventory);
+        }
+    }
+
     private void payEnforceGoldFromUser(User user, Weapon weapon) {
-        if (user.getGold() < weapon.getEnforceCost()) {
+        if (user.getUserInventory().getGold() < weapon.getEnforceCost()) {
             throw new NotEnoughGoldException("골드가 부족합니다.");
         }
-
-        user.setGold(user.getGold() - weapon.getEnforceCost());
-
+        UserInventory userInventory = user.getUserInventory();
+        userInventory.setGold(user.getUserInventory().getGold() - weapon.getEnforceCost());
         userRepository.save(user);
+        userInventoryRepository.save(userInventory);
     }
 
     private Weapon getResultWeapon(User user, Weapon weapon, Long nextUpgrade) {
@@ -68,13 +85,13 @@ public class EnforceService {
         return resultWeapon;
     }
 
-    private static Long getNextUpgrade(Weapon weapon, double number, Double successNumber) {
+    private static Long getNextUpgrade(Weapon weapon, double number, Double successNumber, RefineRequestDto refineRequestDto) {
         Long nextUpgrade = weapon.getUpgrade();
         if(successNumber >= number) { // 성공
             nextUpgrade = nextUpgrade + 1L;
         }
         else {
-            if(weapon.getUpgrade() % 5 != 0) {
+            if(weapon.getUpgrade() % 5 != 0 && refineRequestDto.getShield() == false) {
                 nextUpgrade = nextUpgrade - 1L;
             }
         }
@@ -94,7 +111,7 @@ public class EnforceService {
                 .upgrade(0L)
                 .build();
 
-        user.setGold(user.getGold() + weapon.getPrice());
+//        user.setGold(user.getGold() + weapon.getPrice());
         userRepository.save(user);
         weaponRepository.delete(weapon);
 
