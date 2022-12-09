@@ -1,4 +1,4 @@
-package romanticweapon.server.config;
+package romanticweapon.server.config.init;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import romanticweapon.server.domain.entity.weapon.WeaponImage;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
-import romanticweapon.server.repository.WeaponImageRepository;
+import romanticweapon.server.repository.weapon.WeaponImageRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;

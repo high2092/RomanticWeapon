@@ -1,4 +1,4 @@
-package romanticweapon.server.repository;
+package romanticweapon.server.repository.weapon;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import romanticweapon.server.domain.entity.User;
