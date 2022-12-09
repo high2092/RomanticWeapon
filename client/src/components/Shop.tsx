@@ -1,5 +1,6 @@
 import React from 'react';
 import * as S from './Shop.style';
+import shieldImgUrl from '../assets/shield.png';
 
 export const Shop = () => {
   return (
@@ -14,7 +15,9 @@ export const Shop = () => {
         <S.TabMenu>.</S.TabMenu>
       </S.Tab>
       <S.Showcase>
-        <div>프텍</div>
+        <div>
+          <img src={shieldImgUrl} />
+        </div>
         <div>리커</div>
         <div>엄</div>
         <div>하준</div>

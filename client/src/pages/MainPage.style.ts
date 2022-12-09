@@ -11,9 +11,9 @@ export const MainPage = styled.div`
 export const Menu = styled.div`
   position: fixed;
   bottom: 2rem;
-  right: -5rem;
+  right: -2rem;
 
-  width: 40rem;
+  width: 45rem;
   height: 5rem;
   background-color: #dddddd;
   border-radius: 3rem;

@@ -3,6 +3,11 @@ import Forge from '../components/Forge';
 import * as S from './MainPage.style';
 import { useNavigate } from 'react-router-dom';
 import { mainBgm } from '../constants/constants';
+import dunjeonImageUrl from '../assets/dunjeon.gif';
+import rankingImageUrl from '../assets/ranking.gif';
+import shopImageUrl from '../assets/shop.png';
+import settingImgUrl from '../assets/setting.png';
+import inventoryImgUrl from '../assets/inventory.png';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -25,9 +30,15 @@ const MainPage = () => {
 
       <S.Menu>
         <div>▶︎</div>
-        <div onClick={handleShopButtonClick}>상점</div>
-        <div>던전</div>
-        <div>설정</div>
+        <img src={rankingImageUrl}></img>
+        <img
+          src={shopImageUrl}
+          width="35"
+          onClick={handleShopButtonClick}
+        ></img>
+        <img src={dunjeonImageUrl}></img>
+        <img src={inventoryImgUrl} width="35"></img>
+        <img src={settingImgUrl} width="35"></img>
       </S.Menu>
     </S.MainPage>
   );
