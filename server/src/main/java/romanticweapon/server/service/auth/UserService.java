@@ -14,13 +14,13 @@ import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
-import romanticweapon.server.repository.UserRepository;
-import romanticweapon.server.repository.WeaponImageRepository;
-import romanticweapon.server.repository.WeaponRepository;
-import romanticweapon.server.util.SecurityUtil;
+import romanticweapon.server.exception.exception.DuplicateUserIdException;
+import romanticweapon.server.exception.exception.DuplicateUserNameException;
+import romanticweapon.server.repository.auth.UserRepository;
+import romanticweapon.server.repository.weapon.WeaponImageRepository;
+import romanticweapon.server.repository.weapon.WeaponRepository;
+import romanticweapon.server.util.auth.SecurityUtil;
 import romanticweapon.server.util.staticc.WeaponConstant;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,7 +38,6 @@ public class UserService {
     @Transactional
     public TokenInfo login(String userId, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId, password);
-
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
@@ -48,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public String register(UserRegisterRequestDto userRegisterRequestDto) throws Exception {
+    public String register(UserRegisterRequestDto userRegisterRequestDto) {
         if(userRegisterRequestDto.getIsOAuth() == true) {
             if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {
 
@@ -62,15 +61,15 @@ public class UserService {
             return login.getAccessToken();
         }
 
-        if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {
-            throw new Exception("이미 존재하는 게정입니다.");
-        }
-
-        if(userRepository.findByUsername(userRegisterRequestDto.getUsername()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다");
-        }
-
+        checkRequestInfoIsDuplicated(userRegisterRequestDto);
         User user = userRepository.save(userRegisterRequestDto.toEntity());
+        setBasicWeaponToUser(user);
+        user.encodePassword(passwordEncoder);
+
+        return user.getUserId();
+    }
+
+    private void setBasicWeaponToUser(User user) {
         Weapon weapon = Weapon.builder()
                 .enforceCost(Long.valueOf(WeaponConstant.SWORD_ENFORCE[0]))
                 .weaponImage(weaponImageRepository.findByTypeAndUpgrade(WeaponType.SWORD, 0L).get())
@@ -81,10 +80,16 @@ public class UserService {
                 .upgrade(0L)
                 .build();
         weaponRepository.save(weapon);
+    }
 
-        user.encodePassword(passwordEncoder);
+    private void checkRequestInfoIsDuplicated(UserRegisterRequestDto userRegisterRequestDto) {
+        if(userRepository.findByUserId(userRegisterRequestDto.getId()).isPresent()) {
+            throw new DuplicateUserIdException("이미 존재하는 UserID 입니다.");
+        }
 
-        return user.getUserId();
+        if(userRepository.findByUsername(userRegisterRequestDto.getUsername()).isPresent()) {
+            throw new DuplicateUserNameException("이미 존재하는 UserName 입니다.");
+        }
     }
 
     @Transactional

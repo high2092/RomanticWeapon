@@ -9,7 +9,7 @@ import romanticweapon.server.domain.dto.oauth.TokenInfo;
 import romanticweapon.server.domain.dto.request.auth.UserLoginRequestDto;
 import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
 import romanticweapon.server.service.auth.UserService;
-import romanticweapon.server.util.SecurityUtil;
+import romanticweapon.server.util.auth.SecurityUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -23,22 +23,17 @@ public class UserController {
     private final UserService userService;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) {
-        TokenInfo login = userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword());
-        Cookie cookie = new Cookie("accessToken", login.getAccessToken());
-        cookie.setMaxAge(24 * 60 * 60); // 1 day
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-
+        response.addCookie(SecurityUtil.getCookieWithAccessToken(
+                userService.login(userLoginRequestDto.getId(), userLoginRequestDto.getPassword()))
+        );
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/check-login")
     public ResponseEntity<?> isLogin() {
         String currentUserId = SecurityUtil.getCurrentUserId();
-        log.info("{}", currentUserId);
-        if(currentUserId.equals("anonymousUser")) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        log.info("current user id : {}", currentUserId);
+        if(currentUserId.equals("anonymousUser")) return new ResponseEntity<>("로그인 되어있지 않습니다.",HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

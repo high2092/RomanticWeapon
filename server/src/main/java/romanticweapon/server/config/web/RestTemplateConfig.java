@@ -1,4 +1,4 @@
-package romanticweapon.server.config;
+package romanticweapon.server.config.web;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
