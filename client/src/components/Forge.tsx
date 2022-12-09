@@ -11,7 +11,7 @@ import {
 import { httpGet, httpPost } from '../utils/utils';
 import refineSuccessAnimationUrl from '../assets/refine-success.gif';
 import refineFailureAnimationUrl from '../assets/refine-failure.gif';
-import { goldAtom } from '../core';
+import { goldAtom } from '../cores/store';
 import { useAtom } from 'jotai';
 
 const Results = {
