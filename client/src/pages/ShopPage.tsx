@@ -4,9 +4,13 @@ import { Shop } from '../components/Shop';
 import { shopBgm } from '../constants/constants';
 import * as S from './ShopPage.style';
 import goldImageUrl from '../assets/gold.gif';
+import { goldAtom } from '../core';
+import { useAtom } from 'jotai';
 
 export const ShopPage = () => {
   const navigate = useNavigate();
+
+  const [gold, setGold] = useAtom(goldAtom);
 
   useEffect(() => {
     const bgm = shopBgm();
@@ -16,7 +20,6 @@ export const ShopPage = () => {
     };
   }, []);
 
-  const gold = 1000;
   return (
     <S.ShopPage>
       <div onClick={() => navigate(-1)}>뒤로 가기</div>
