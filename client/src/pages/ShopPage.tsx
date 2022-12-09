@@ -4,7 +4,7 @@ import { Shop } from '../components/Shop';
 import { shopBgm } from '../constants/constants';
 import * as S from './ShopPage.style';
 import goldImageUrl from '../assets/gold.gif';
-import { goldAtom } from '../core';
+import { goldAtom } from '../cores/store';
 import { useAtom } from 'jotai';
 
 export const ShopPage = () => {
