@@ -47,6 +47,11 @@ dependencies {
 
 	// jackson
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// Mockito
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+
 }
 
 tasks.named('test') {
