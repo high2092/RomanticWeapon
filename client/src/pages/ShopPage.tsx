@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Shop } from '../components/Shop';
 import { shopBgm } from '../constants/constants';
 import * as S from './ShopPage.style';
+import goldImageUrl from '../assets/gold.gif';
 
 export const ShopPage = () => {
   const navigate = useNavigate();
@@ -19,7 +20,12 @@ export const ShopPage = () => {
   return (
     <S.ShopPage>
       <div onClick={() => navigate(-1)}>뒤로 가기</div>
-      <S.Gold>골드: {gold}</S.Gold>
+      <S.GoldSection>
+        <div>
+          <S.GoldIcon src={goldImageUrl}></S.GoldIcon>
+        </div>
+        <S.Gold>{gold}</S.Gold>
+      </S.GoldSection>
       <Shop />
     </S.ShopPage>
   );
