@@ -11,6 +11,8 @@ import {
 import { httpGet, httpPost } from '../utils/utils';
 import refineSuccessAnimationUrl from '../assets/refine-success.gif';
 import refineFailureAnimationUrl from '../assets/refine-failure.gif';
+import { goldAtom } from '../core';
+import { useAtom } from 'jotai';
 
 const Results = {
   SUCCESS: 'SUCCESS',
@@ -60,7 +62,7 @@ const Forge = () => {
   const [showDimmed, setShowDimmed] = useState(false);
   const [weaponName, setWeaponName] = useState<string>();
   const [cost, setCost] = useState<number>();
-  const [gold, setGold] = useState<number>();
+  const [gold, setGold] = useAtom(goldAtom);
   const [chance, setChance] = useState<number>();
   const [imageUrl, setImageUrl] = useState<string>('');
   const timeoutRef = useRef<any>(null);
