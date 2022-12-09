@@ -36,12 +36,15 @@ export const Showcase = styled.div`
   display: grid;
   grid-template-rows: repeat(4, 1fr);
   grid-template-columns: repeat(7, 1fr);
+`;
 
-  * {
-    margin: 2rem;
-    display: flex;
-    background-color: antiquewhite;
-    justify-content: center;
-    align-items: center;
-  }
+export const Item = styled.div`
+  display: flex;
+
+  margin: 2rem;
+  background-color: antiquewhite;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
