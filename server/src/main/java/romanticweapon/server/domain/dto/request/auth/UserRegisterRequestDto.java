@@ -28,14 +28,14 @@ public class UserRegisterRequestDto {
     @JsonIgnore
     private Boolean isOAuth = false;
 
-    public User toEntity(UserInventory userInventory) {
+    public User toEntity() {
         return User.builder()
                 .userId(id)
                 .password(password)
                 .username(username)
                 .role(Role.USER)
+                .gold(9999999L)
                 .targetUpgrade(15L)
-                .userInventory(userInventory)
                 .build();
     }
 

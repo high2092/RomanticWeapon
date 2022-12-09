@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import romanticweapon.server.domain.dto.request.shop.BuyItemRequestDto;
+import romanticweapon.server.domain.dto.response.SalesListResponseDto;
 import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.service.auth.UserService;
 import romanticweapon.server.service.shop.ShopService;
@@ -28,6 +29,6 @@ public class ShopController {
 
     @GetMapping("/shop")
     public ResponseEntity<?> getShopInfo() {
-        return new ResponseEntity<>(shopService.getItemList(), HttpStatus.OK);
+        return new ResponseEntity<>(new SalesListResponseDto(shopService.getItemList()), HttpStatus.OK);
     }
 }

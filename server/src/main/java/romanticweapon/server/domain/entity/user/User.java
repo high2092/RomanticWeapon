@@ -34,12 +34,15 @@ public class User implements UserDetails {
     @Column(columnDefinition = "LONG DEFAULT 1")
     private Long targetUpgrade;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_inventory_id")
+    @Column(columnDefinition = "LONG DEFAULT 99999")
+    private Long gold;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
     private UserInventory userInventory;
 
     @Builder
-    public User(String userId, String password, String username, Role role, Long targetUpgrade, UserInventory userInventory) {
+    public User(Long gold, String userId, String password, String username, Role role, Long targetUpgrade, UserInventory userInventory) {
+        this.gold = gold;
         this.userId = userId;
         this.password = password;
         this.username = username;

@@ -1,42 +1,61 @@
 package romanticweapon.server.service.shop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import romanticweapon.server.domain.dto.response.InventoryInfoResponseDto;
-import romanticweapon.server.domain.entity.shop.Shop;
+import romanticweapon.server.domain.dto.response.AfterBuyResponseDto;
 import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.exception.exception.NotEnoughGoldException;
 import romanticweapon.server.repository.auth.UserRepository;
 import romanticweapon.server.repository.inventory.UserInventoryRepository;
-import romanticweapon.server.repository.shop.ShopRepository;
+import romanticweapon.server.util.staticc.Item;
+import romanticweapon.server.util.staticc.ShopConstant;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ShopService {
 
     private final UserRepository userRepository;
     private final UserInventoryRepository userInventoryRepository;
-    private final ShopRepository shopRepository;
 
-    public List<Shop> getItemList() {
-        return shopRepository.findAll();
+    public List<Item> getItemList() {
+        List<Item> items = new ArrayList<>();
+        items.addAll(Arrays.asList(ShopConstant.itemList));
+        items.remove(null);
+        return items;
     }
 
     @Transactional
-    public InventoryInfoResponseDto buyItem(User user, int idx) {
-        Shop shop = shopRepository.findByIdx((long) idx).get();
-        UserInventory userInventory = user.getUserInventory();
-        if(userInventory.getGold() < shop.getPrice()) {
+    public AfterBuyResponseDto buyItem(User user, int idx) {
+        Item item = ShopConstant.itemList[idx];
+        UserInventory userInventory;
+
+        if(userInventoryRepository.findByIdx(idx).isPresent()) {
+            userInventory = userInventoryRepository.findByIdx(idx).get();
+        }
+        else {
+            userInventory = UserInventory.builder()
+                    .amount(0)
+                    .idx(idx)
+                    .user(user)
+                    .build();
+        }
+
+        if(user.getGold() < item.getPrice()) {
             throw new NotEnoughGoldException("골드가 부족합니다. (프로텍트 실드 구매 실패)");
         }
-        userInventory.setProtectShield(userInventory.getProtectShield() + 1);
-        userInventory.setGold(userInventory.getGold() - shop.getPrice());
+        userInventory.setAmount(userInventory.getAmount()+ 1);
+        user.setGold(user.getGold() - item.getPrice());
         userInventoryRepository.save(userInventory);
-        return new InventoryInfoResponseDto(userInventory.getGold(), userInventory.getProtectShield());
+        userRepository.save(user);
+        return new AfterBuyResponseDto(user.getGold(), userInventory.getAmount());
 
     }
 }

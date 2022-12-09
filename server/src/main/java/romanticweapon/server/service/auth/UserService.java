@@ -56,7 +56,7 @@ public class UserService {
 
             }
             else {
-                User user = userRepository.save(userRegisterRequestDto.toEntity(getNewInventory()));
+                User user = userRepository.save(userRegisterRequestDto.toEntity());
                 user.encodePassword(passwordEncoder);
             }
 
@@ -67,20 +67,11 @@ public class UserService {
         checkRequestInfoIsDuplicated(userRegisterRequestDto);
 
 
-        User user = userRepository.save(userRegisterRequestDto.toEntity(getNewInventory()));
-        user.getUserInventory().setUser(user);
+        User user = userRepository.save(userRegisterRequestDto.toEntity());
         setBasicWeaponToUser(user);
         user.encodePassword(passwordEncoder);
 
         return user.getUserId();
-    }
-
-    private UserInventory getNewInventory() {
-        UserInventory userInventory = UserInventory.builder()
-                .gold(999999L)
-                .protectShield(0)
-                .build();
-        return userInventoryRepository.save(userInventory);
     }
 
     private void setBasicWeaponToUser(User user) {
