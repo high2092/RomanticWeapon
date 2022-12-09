@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 export const ShopPage = () => {
   const navigate = useNavigate();
 
-  const [gold, setGold] = useAtom(goldAtom);
+  const [gold] = useAtom(goldAtom);
 
   useEffect(() => {
     const bgm = shopBgm();
