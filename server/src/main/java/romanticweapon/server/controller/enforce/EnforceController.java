@@ -13,6 +13,7 @@ import romanticweapon.server.domain.dto.response.weapon.WeaponInfoResponseDto;
 import romanticweapon.server.domain.dto.response.weapon.WeaponSellResponseDto;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
+import romanticweapon.server.domain.mapper.EnforceMapper;
 import romanticweapon.server.service.auth.UserService;
 import romanticweapon.server.service.enforce.EnforceService;
 
@@ -23,11 +24,12 @@ public class EnforceController {
     private final EnforceService enforceService;
     private final UserService userService;
 
+    private final EnforceMapper enforceMapper;
+
     @PostMapping("/refine")
     public ResponseEntity<?> enforce(@RequestBody RefineRequestDto refineRequestDto) throws Exception {
         // 누가 요청했는지 알아야함
         User userByAuthentication = userService.findUserByAuthentication();
-
         Weapon beforeWeapon = enforceService.getWeaponByUser(userByAuthentication);
         Long beforeUp = beforeWeapon.getUpgrade();
         Weapon enforce = enforceService.enforce(userByAuthentication);
@@ -40,43 +42,23 @@ public class EnforceController {
             achieve = true;
             userService.setAchievement(userByAuthentication, enforce.getUpgrade() + 1L);
         }
-        RefineResponseDto refineResponseDto = new RefineResponseDto(
-                enforce.getType(),
-                enforce.getUpgrade(),
-                enforce.getEnforceCost(),
-                (int) Math.round((1 - enforce.getUpgrade() * 0.05) * 100),
-                enforce.getPrice(),
-                enforce.getName(),
-                enforce.getWeaponImage().getFilePath(),
-                isSuccess,
-                userByAuthentication.getGold(),
-                (int) Math.round((1 - beforeUp * 0.05) * 100),
-                achieve
-        );
+
+        RefineResponseDto refineResponseDto = enforceMapper.getRefineResponseDto(userByAuthentication, beforeUp, enforce, isSuccess, achieve);
         return new ResponseEntity<>(refineResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/weapon")
-    public ResponseEntity<?> getWeaponInfo() throws Exception {
+    public ResponseEntity<?> getWeaponInfo() {
         // 누가 요청했는지 알아야함
         User userByAuthentication = userService.findUserByAuthentication();
-
         Weapon beforeWeapon = enforceService.getWeaponByUser(userByAuthentication);
 
-        WeaponInfoResponseDto refineResponseDto = new WeaponInfoResponseDto(
-                beforeWeapon.getType(),
-                beforeWeapon.getUpgrade(),
-                beforeWeapon.getEnforceCost(),
-                (int) Math.round((1 - beforeWeapon.getUpgrade() * 0.05) * 100),
-                beforeWeapon.getPrice(),
-                beforeWeapon.getName(),
-                beforeWeapon.getWeaponImage().getFilePath(),
-                userByAuthentication.getGold()
-        );
+        WeaponInfoResponseDto refineResponseDto = enforceMapper.getWeaponInfoResponseDto(userByAuthentication, beforeWeapon);
         return new ResponseEntity<>(refineResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/sell")
+    @Deprecated
     public ResponseEntity<?> sellCurrentWeapon() {
         User userByAuthentication = userService.findUserByAuthentication();
         Weapon weapon = enforceService.getWeaponByUser(userByAuthentication);
