@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import romanticweapon.server.domain.enumm.error.ErrorCode;
 import romanticweapon.server.exception.exception.DuplicateUserIdException;
 import romanticweapon.server.exception.exception.DuplicateUserNameException;
+import romanticweapon.server.exception.exception.NoSuchItemException;
 import romanticweapon.server.exception.exception.NotEnoughGoldException;
 
 @RestControllerAdvice
@@ -17,8 +18,13 @@ import romanticweapon.server.exception.exception.NotEnoughGoldException;
 public class RomanticWeaponExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public void unknownException(Exception e) {
+    public ResponseEntity<?> unknownException(Exception e) {
         log.error("UNKNOWN EXCEPTION : {}\n{}", e.getClass().getSimpleName(), e.getCause());
+        return new ResponseEntity<>(
+                e.getClass().getSimpleName() + " : " + e.getCause(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                );
+
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -38,6 +44,11 @@ public class RomanticWeaponExceptionHandler {
     @ExceptionHandler(NotEnoughGoldException.class)
     public ResponseEntity notEnoughGoldException(NotEnoughGoldException e) {
         return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(ErrorCode.NOT_ENOUGH_GOLD.getValue()));
+    }
+
+    @ExceptionHandler(NoSuchItemException.class)
+    public ResponseEntity noSuchItemException(NoSuchItemException e) {
+        return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(ErrorCode.NO_SUCH_ITEM.getValue()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

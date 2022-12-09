@@ -2,10 +2,9 @@ package romanticweapon.server.domain.dto.request.auth;
 
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
-import romanticweapon.server.domain.entity.User;
-import romanticweapon.server.domain.entity.weapon.Weapon;
+import romanticweapon.server.domain.entity.user.User;
+import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.domain.enumm.auth.Role;
-import romanticweapon.server.util.staticc.WeaponConstant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -29,14 +28,14 @@ public class UserRegisterRequestDto {
     @JsonIgnore
     private Boolean isOAuth = false;
 
-    public User toEntity() {
+    public User toEntity(UserInventory userInventory) {
         return User.builder()
                 .userId(id)
                 .password(password)
                 .username(username)
                 .role(Role.USER)
-                .targetUpgrade(1L)
-                .gold(99999999L)
+                .targetUpgrade(15L)
+                .userInventory(userInventory)
                 .build();
     }
 

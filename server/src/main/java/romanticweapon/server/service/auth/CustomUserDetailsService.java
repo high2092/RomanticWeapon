@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.repository.auth.UserRepository;
 
 @Service

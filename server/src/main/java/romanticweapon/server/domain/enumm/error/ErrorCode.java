@@ -3,7 +3,9 @@ package romanticweapon.server.domain.enumm.error;
 public enum ErrorCode {
     NOT_ENOUGH_GOLD(409),
     DUPLICATE_USER_ID(409),
-    DUPLICATE_USER_NAME(409)
+    DUPLICATE_USER_NAME(409),
+
+    NO_SUCH_ITEM(409)
     ;
 
     private final int value;

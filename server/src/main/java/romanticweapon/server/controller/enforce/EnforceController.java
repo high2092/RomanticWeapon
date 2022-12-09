@@ -11,7 +11,7 @@ import romanticweapon.server.domain.dto.request.weapon.RefineRequestDto;
 import romanticweapon.server.domain.dto.response.weapon.RefineResponseDto;
 import romanticweapon.server.domain.dto.response.weapon.WeaponInfoResponseDto;
 import romanticweapon.server.domain.dto.response.weapon.WeaponSellResponseDto;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.mapper.EnforceMapper;
 import romanticweapon.server.service.auth.UserService;
@@ -32,7 +32,7 @@ public class EnforceController {
         User userByAuthentication = userService.findUserByAuthentication();
         Weapon beforeWeapon = enforceService.getWeaponByUser(userByAuthentication);
         Long beforeUp = beforeWeapon.getUpgrade();
-        Weapon enforce = enforceService.enforce(userByAuthentication);
+        Weapon enforce = enforceService.enforce(userByAuthentication, refineRequestDto);
 
         String isSuccess = "FAILURE";
         if(beforeUp >= enforce.getUpgrade()) isSuccess = "FAILURE";
@@ -69,7 +69,7 @@ public class EnforceController {
                 WeaponSellResponseDto.builder()
                         .level(weaponAfterSell.getUpgrade())
                         .cost(weaponAfterSell.getEnforceCost())
-                        .gold(userByAuthentication.getGold())
+                        .gold(userByAuthentication.getUserInventory().getGold())
                         .type(weaponAfterSell.getType())
                         .name(weaponAfterSell.getName())
                         .chance((int) Math.round((1 - weaponAfterSell.getUpgrade() * 0.05) * 100))
