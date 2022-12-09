@@ -2,7 +2,7 @@ package romanticweapon.server.domain.entity.weapon;
 
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.user.User;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
 
 import javax.persistence.*;

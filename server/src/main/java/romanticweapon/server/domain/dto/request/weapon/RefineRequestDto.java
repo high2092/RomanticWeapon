@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RefineRequestDto {
-    private Long weaponIdx;
+    private Boolean shield;
 }

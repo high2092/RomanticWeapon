@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import romanticweapon.server.config.auth.JwtTokenProvider;
 import romanticweapon.server.domain.dto.oauth.TokenInfo;
 import romanticweapon.server.domain.dto.request.auth.UserRegisterRequestDto;
-import romanticweapon.server.domain.entity.User;
+import romanticweapon.server.domain.entity.user.User;
+import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
 import romanticweapon.server.exception.exception.DuplicateUserIdException;
 import romanticweapon.server.exception.exception.DuplicateUserNameException;
 import romanticweapon.server.repository.auth.UserRepository;
+import romanticweapon.server.repository.inventory.UserInventoryRepository;
 import romanticweapon.server.repository.weapon.WeaponImageRepository;
 import romanticweapon.server.repository.weapon.WeaponRepository;
 import romanticweapon.server.util.auth.SecurityUtil;
@@ -34,6 +36,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final WeaponImageRepository weaponImageRepository;
     private final WeaponRepository weaponRepository;
+    private final UserInventoryRepository userInventoryRepository;
 
     @Transactional
     public TokenInfo login(String userId, String password) {
@@ -53,7 +56,7 @@ public class UserService {
 
             }
             else {
-                User user = userRepository.save(userRegisterRequestDto.toEntity());
+                User user = userRepository.save(userRegisterRequestDto.toEntity(getNewInventory()));
                 user.encodePassword(passwordEncoder);
             }
 
@@ -62,11 +65,22 @@ public class UserService {
         }
 
         checkRequestInfoIsDuplicated(userRegisterRequestDto);
-        User user = userRepository.save(userRegisterRequestDto.toEntity());
+
+
+        User user = userRepository.save(userRegisterRequestDto.toEntity(getNewInventory()));
+        user.getUserInventory().setUser(user);
         setBasicWeaponToUser(user);
         user.encodePassword(passwordEncoder);
 
         return user.getUserId();
+    }
+
+    private UserInventory getNewInventory() {
+        UserInventory userInventory = UserInventory.builder()
+                .gold(999999L)
+                .protectShield(0)
+                .build();
+        return userInventoryRepository.save(userInventory);
     }
 
     private void setBasicWeaponToUser(User user) {
