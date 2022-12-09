@@ -21,8 +21,8 @@ const Results = {
 
 type Results = typeof Results[keyof typeof Results];
 
-const httpPostRefine = async () => {
-  const response = await httpPost(`${HOST}/refine`, { weaponIdx: 1 });
+const httpPostRefine = async (body: any) => {
+  const response = await httpPost(`${HOST}/refine`, body);
   const result = await response.json();
   return result;
 };
@@ -56,6 +56,8 @@ const httpGetWeapon = async () => {
   return weapon;
 };
 
+const PROTECT_SHIELD = 1;
+
 const Forge = () => {
   const [level, setLevel] = useState<number>();
   const [logs, setLogs] = useState<string[]>([]);
@@ -72,6 +74,8 @@ const Forge = () => {
 
   const successTimeoutRef = useRef<any>(0);
   const failureTimeoutRef = useRef<any>(0);
+
+  const [useProtectShield, setUseProtectShield] = useState(false);
 
   const update = ({
     result,
@@ -135,7 +139,9 @@ const Forge = () => {
   const handleTryButtonClick = () => {
     setShowDimmed(true);
     refineSound.play();
-    httpPostRefine().then((refineResult) => {
+    const use = [];
+    if (useProtectShield) use.push(PROTECT_SHIELD);
+    httpPostRefine({ use }).then((refineResult) => {
       setTimeout(() => {
         update(refineResult);
         setShowDimmed(false);
@@ -174,6 +180,16 @@ const Forge = () => {
           <S.SizedText fontSize="1.5rem">현재 재련 단계: +{level}</S.SizedText>
           <div>소지금: {gold}</div>
           <div>강화비용: {cost}</div>
+          <div>
+            프로텍트 쉴드:{' '}
+            <input
+              type="checkbox"
+              checked={useProtectShield}
+              onClick={() => {
+                setUseProtectShield(!useProtectShield);
+              }}
+            />
+          </div>
           <div>
             <S.RefineButtonSection>
               <S.SizedText fontSize="1.3rem">
