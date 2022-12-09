@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class InventoryInfoResponseDto {
     private Long gold;
-    private int shield;
+    private int amount;
 }
