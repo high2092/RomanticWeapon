@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import romanticweapon.server.domain.entity.User;
 import romanticweapon.server.domain.entity.weapon.Weapon;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
-import romanticweapon.server.repository.UserRepository;
-import romanticweapon.server.repository.WeaponImageRepository;
-import romanticweapon.server.repository.WeaponRepository;
-import romanticweapon.server.util.SecurityUtil;
+import romanticweapon.server.exception.exception.NotEnoughGoldException;
+import romanticweapon.server.repository.auth.UserRepository;
+import romanticweapon.server.repository.weapon.WeaponImageRepository;
+import romanticweapon.server.repository.weapon.WeaponRepository;
 import romanticweapon.server.util.staticc.WeaponConstant;
 
 import java.security.SecureRandom;
@@ -27,67 +27,62 @@ public class EnforceService {
     @Transactional
     public Weapon getWeaponByUser(User user) {
         Optional<Weapon> byUser = weaponRepository.findByUser(user);
-        if (byUser.isEmpty()) {
-            /* todo : 유저 무기 없음 */
-            return null;
-        } else {
-            return byUser.get();
-        }
+        return byUser.get();
     }
 
     @Transactional
-    public Weapon enforce(User user) throws Exception {
+    public Weapon enforce(User user) {
         Weapon weapon = getWeaponByUser(user);
 
+        payEnforceGoldFromUser(user, weapon);
+        Random random = new SecureRandom();
+        double number = random.nextDouble();//     0.0 ~ 1.0
+
+        Long currentWeaponUpgrade = weapon.getUpgrade();
+        Long nextUpgrade = getNextUpgrade(weapon, number, 1 - currentWeaponUpgrade * 0.05);
+        return getResultWeapon(user, weapon, nextUpgrade);
+    }
+
+    private void payEnforceGoldFromUser(User user, Weapon weapon) {
         if (user.getGold() < weapon.getEnforceCost()) {
-            throw new Exception("골드가 부족합니다.");
+            throw new NotEnoughGoldException("골드가 부족합니다.");
         }
 
         user.setGold(user.getGold() - weapon.getEnforceCost());
 
         userRepository.save(user);
-//        long seed = System.currentTimeMillis();
-        Random random = new SecureRandom();
-        double number = random.nextDouble();//     0.0 ~ 1.0
+    }
 
-        Long currentWeaponUpgrade = weapon.getUpgrade();
-        Double successNumber = 1 - currentWeaponUpgrade * 0.05; // 1강 = 0.95, 19 -> 20 = 0.05
-        if (successNumber >= number) {
-            Long nextUpgrade = weapon.getUpgrade() + 1L;
-            Weapon upgradedWeapon = Weapon.builder()
-                    .upgrade((long) nextUpgrade)
-                    .enforceCost((long) WeaponConstant.SWORD_ENFORCE[Math.toIntExact(nextUpgrade)])
-                    .weaponImage(weaponImageRepository.findByTypeAndUpgrade(weapon.getType(), nextUpgrade).get())
-                    .type(weapon.getType())
-                    .name(WeaponConstant.SWORD_NAME[Math.toIntExact(nextUpgrade)])
-                    .user(user)
-                    .price(WeaponConstant.SWORD_PRICE[Math.toIntExact(nextUpgrade)])
-                    .build();
-            weaponRepository.delete(weapon);
-            weaponRepository.save(upgradedWeapon);
-            return upgradedWeapon;
+    private Weapon getResultWeapon(User user, Weapon weapon, Long nextUpgrade) {
+        Weapon resultWeapon = Weapon.builder()
+                .upgrade((long) nextUpgrade)
+                .enforceCost((long) WeaponConstant.SWORD_ENFORCE[Math.toIntExact(nextUpgrade)])
+                .weaponImage(weaponImageRepository.findByTypeAndUpgrade(weapon.getType(), nextUpgrade).get())
+                .type(weapon.getType())
+                .name(WeaponConstant.SWORD_NAME[Math.toIntExact(nextUpgrade)])
+                .user(user)
+                .price(WeaponConstant.SWORD_PRICE[Math.toIntExact(nextUpgrade)])
+                .build();
+        weaponRepository.delete(weapon);
+        weaponRepository.save(resultWeapon);
+        return resultWeapon;
+    }
+
+    private static Long getNextUpgrade(Weapon weapon, double number, Double successNumber) {
+        Long nextUpgrade = weapon.getUpgrade();
+        if(successNumber >= number) { // 성공
+            nextUpgrade = nextUpgrade + 1L;
         }
         else {
-            Long nextUpgrade = weapon.getUpgrade();
             if(weapon.getUpgrade() % 5 != 0) {
                 nextUpgrade = nextUpgrade - 1L;
             }
-            Weapon upgradedWeapon = Weapon.builder()
-                    .upgrade((long) nextUpgrade)
-                    .enforceCost((long) WeaponConstant.SWORD_ENFORCE[Math.toIntExact(nextUpgrade)])
-                    .weaponImage(weaponImageRepository.findByTypeAndUpgrade(weapon.getType(), nextUpgrade).get())
-                    .type(weapon.getType())
-                    .name(WeaponConstant.SWORD_NAME[Math.toIntExact(nextUpgrade)])
-                    .user(user)
-                    .price(WeaponConstant.SWORD_PRICE[Math.toIntExact(nextUpgrade)])
-                    .build();
-            weaponRepository.delete(weapon);
-            weaponRepository.save(upgradedWeapon);
-            return upgradedWeapon;
         }
+        return nextUpgrade;
     }
 
     @Transactional
+    @Deprecated
     public Weapon sellWeapon(User user, Weapon weapon) {
         Weapon newWeapon = Weapon.builder()
                 .enforceCost(Long.valueOf(WeaponConstant.SWORD_ENFORCE[0]))
