@@ -17,7 +17,7 @@ public class SecurityUtil {
 
     public static Cookie getCookieWithAccessToken(TokenInfo tokenInfo) {
         Cookie cookie = new Cookie("accessToken", tokenInfo.getAccessToken());
-        cookie.setMaxAge(24 * 60 * 60); // 1 day
+        cookie.setMaxAge(30 * 60); // 1 day
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         return cookie;
