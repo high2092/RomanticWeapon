@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 public class OAuthController {
 
     private final OAuthService oAuthService;
-    private final ObjectMapper objectMapper;
-    private final RestTemplate restTemplate;
     private final UserService userService;
     private final GoogleOAuth googleOAuth;
 

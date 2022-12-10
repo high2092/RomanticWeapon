@@ -9,14 +9,23 @@ import shopImageUrl from '../assets/shop.png';
 import settingImgUrl from '../assets/setting.png';
 import inventoryImgUrl from '../assets/inventory.png';
 import { httpGet } from '../utils/utils';
+import { useAtom } from 'jotai';
+import { inventoryAtom } from '../cores/store';
 
 const httpGetLogout = async () => {
   const response = await httpGet(`${HOST}/logout`);
   return response;
+}
+
+const httpGetInventory = async () => {
+  const response = await httpGet(`${HOST}/inventory`);
+  const inventory = await response.json();
+  return inventory;
 };
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [, setInventory] = useAtom(inventoryAtom);
 
   const handleShopButtonClick = () => {
     navigate('/shop');
@@ -31,12 +40,27 @@ const MainPage = () => {
     }
   };
 
+  const handleInventoryButtonClick = () => {
+    navigate('/inventory');
+  };
+
+  // BGM
   useEffect(() => {
     const bgm = mainBgm();
     bgm.play();
     return () => {
       bgm.pause();
     };
+  }, []);
+
+  const fetchInventory = async () => {
+    const { inventory } = await httpGetInventory();
+    setInventory(inventory);
+  };
+
+  // 인벤토리
+  useEffect(() => {
+    fetchInventory();
   }, []);
 
   return (
@@ -48,15 +72,15 @@ const MainPage = () => {
 
       <S.Menu>
         <div>▶︎</div>
-        <img src={rankingImageUrl}></img>
+        <img src={rankingImageUrl} />
+        <img src={shopImageUrl} width="35" onClick={handleShopButtonClick} />
+        <img src={dunjeonImageUrl} />
         <img
-          src={shopImageUrl}
+          src={inventoryImgUrl}
           width="35"
-          onClick={handleShopButtonClick}
-        ></img>
-        <img src={dunjeonImageUrl}></img>
-        <img src={inventoryImgUrl} width="35"></img>
-        <img src={settingImgUrl} width="35"></img>
+          onClick={handleInventoryButtonClick}
+        />
+        <img src={settingImgUrl} width="35" />
       </S.Menu>
     </S.MainPage>
   );

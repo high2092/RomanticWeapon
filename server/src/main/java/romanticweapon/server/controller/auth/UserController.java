@@ -12,12 +12,14 @@ import romanticweapon.server.service.auth.UserService;
 import romanticweapon.server.util.auth.SecurityUtil;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/auth")
 public class UserController {
 
     private final UserService userService;
@@ -40,6 +42,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequestDto request) throws Exception {
         userService.register(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        response.addCookie(userService.logout());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

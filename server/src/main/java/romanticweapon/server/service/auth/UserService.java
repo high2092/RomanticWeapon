@@ -24,6 +24,8 @@ import romanticweapon.server.repository.weapon.WeaponRepository;
 import romanticweapon.server.util.auth.SecurityUtil;
 import romanticweapon.server.util.staticc.WeaponConstant;
 
+import javax.servlet.http.Cookie;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -108,5 +110,13 @@ public class UserService {
     public void setAchievement(User user, Long upgrade) {
         user.setTargetUpgrade(upgrade);
         userRepository.save(user);
+    }
+
+    public Cookie logout() {
+        Cookie cookie = new Cookie("accessToken", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        return cookie;
     }
 }

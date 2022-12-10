@@ -98,13 +98,13 @@ const getItemCount = (
 const insertItem = (
   inventory: InventoryItem[],
   inventoryIndexMap: Map<number, number>,
-  itemIdx: number,
+  idx: number,
   amount: number
 ) => {
-  const targetItemInventoryIdx = inventoryIndexMap.get(itemIdx);
+  const targetItemInventoryIdx = inventoryIndexMap.get(idx);
   if (targetItemInventoryIdx === undefined) {
-    inventory.push({ itemIdx, amount });
-    inventoryIndexMap.set(itemIdx, inventory.length - 1);
+    inventory.push({ idx, amount });
+    inventoryIndexMap.set(idx, inventory.length - 1);
   } else {
     inventory[targetItemInventoryIdx].amount = amount;
   }

@@ -54,7 +54,7 @@ public class EnforceService {
     private void validateShield(User user, RefineRequestDto refineRequestDto) {
         if(refineRequestDto.getUse().contains(ItemCode.PROTECT_SHIELD.getValue())) {
             UserInventory userInventory = userInventoryRepository
-                    .findByIdx(ItemCode.PROTECT_SHIELD.getValue())
+                    .findByIdxAndUser(ItemCode.PROTECT_SHIELD.getValue(), user)
                     .get();
             if(userInventory.getAmount() <= 0) {
                 throw new NoSuchItemException("보유한 프로텍트 실드가 없습니다.");
