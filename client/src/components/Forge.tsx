@@ -13,6 +13,8 @@ import refineSuccessAnimationUrl from '../assets/refine-success.gif';
 import refineFailureAnimationUrl from '../assets/refine-failure.gif';
 import { goldAtom } from '../cores/store';
 import { useAtom } from 'jotai';
+import styled from 'styled-components';
+import { Modal } from './common/Modal';
 
 const Results = {
   SUCCESS: 'SUCCESS',
@@ -204,21 +206,15 @@ const Forge = () => {
       </S.Forge>
       {showDimmed && (
         <>
-          <Dimmed handleDimmedClick={() => {}} zIndex={10} />
-          <S.RefineAnimation src={refineAnimationUrl} zIndex={11} />
+          <Modal
+            element={<S.RefineAnimation src={refineAnimationUrl} />}
+            zIndex={11}
+            handleDimmedClick={() => {}}
+          />
         </>
       )}
     </>
   );
-};
-
-interface DimmedProps {
-  zIndex: number;
-  handleDimmedClick: () => void;
-}
-
-const Dimmed = ({ zIndex, handleDimmedClick }: DimmedProps) => {
-  return <S.Dimmed onClick={handleDimmedClick} zIndex={zIndex} />;
 };
 
 export default Forge;

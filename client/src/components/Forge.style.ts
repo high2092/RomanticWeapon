@@ -37,21 +37,7 @@ export const LogsContainer = styled.div`
   flex: 2;
 `;
 
-export const Dimmed = styled.div<{ zIndex: number }>`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: ${(props) => props.zIndex};
-`;
-
-export const RefineAnimation = styled.img<{ zIndex: number }>`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: ${(props) => props.zIndex};
-
+export const RefineAnimation = styled.img`
   width: 10rem;
   height: 10rem;
 `;
