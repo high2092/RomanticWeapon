@@ -34,7 +34,7 @@ const LoginForm = () => {
   });
 
   const loginSubmit = async (body: FieldValues) => {
-    const response = await httpPost(`${HOST}/login`, body);
+    const response = await httpPost(`${HOST}/auth/login`, body);
     if (response.status === 200) {
       navigate('/');
     }
