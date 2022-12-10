@@ -2,11 +2,16 @@ class BGMController {
   private static _bgm = new Audio();
   private static _originalVolume = 1;
   private static _volume = 1;
+  private static _muted = false;
 
   private constructor() {}
 
   static get volume() {
-    return BGMController._volume;
+    return this._volume;
+  }
+
+  static get muted() {
+    return this._muted;
   }
 
   static setBGM(bgm: any) {
@@ -14,27 +19,32 @@ class BGMController {
     this._originalVolume = bgm.volume;
   }
 
-  static setVolume(volume: number) {
-    BGMController._volume = volume;
-    BGMController._bgm.volume =
-      BGMController._volume * BGMController._originalVolume;
+  static setVolume(param: number | ((volume: number) => number)) {
+    if (typeof param === 'number') {
+      this._volume = param;
+      this._bgm.volume = this._volume * this._originalVolume;
+    } else {
+      this.setVolume(param(this._volume));
+    }
   }
 
   static off() {
-    BGMController._bgm.volume = 0;
+    this._bgm.volume = 0;
+    this._muted = true;
   }
 
   static on() {
-    BGMController._bgm.volume =
-      BGMController._volume * BGMController._originalVolume;
+    this._bgm.volume = this._volume * this._originalVolume;
+    this._muted = false;
   }
 
   static play() {
-    BGMController._bgm.play();
+    this._bgm.volume = this.muted ? 0 : this._volume * this._originalVolume;
+    this._bgm.play();
   }
 
   static pause() {
-    BGMController._bgm.pause();
+    this._bgm.pause();
   }
 }
 

@@ -28,3 +28,18 @@ export const LogoutButton = styled.button`
   top: 0;
   right: 0;
 `;
+
+export const SettingModal = styled.div`
+  display: flex;
+
+  padding: 2rem;
+  border-radius: 2rem;
+
+  background-color: white;
+`;
+
+export const SettingOptionTitle = styled.div`
+  margin: auto;
+  margin-right: 2rem;
+  font-size: 1.5rem;
+`;
