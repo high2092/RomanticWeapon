@@ -40,7 +40,7 @@ public class ItemImageInit {
     @PostConstruct
     public void init() throws IOException {
         for (Resource resource : resources) {
-            ClassPathResource classPathResource = new ClassPathResource("/image/item" + resource.getFilename());
+            ClassPathResource classPathResource = new ClassPathResource("/image/item/" + resource.getFilename());
             String fullFilePath = serverUrl + "/" + classPathResource.getPath();
             imageFileNameList.add(resource.getFilename());
             imageFilePathList.add(fullFilePath);

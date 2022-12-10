@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import romanticweapon.server.domain.entity.item.ItemImage;
 import romanticweapon.server.domain.entity.weapon.WeaponImage;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
 import romanticweapon.server.repository.weapon.WeaponImageRepository;
@@ -38,8 +39,9 @@ public class WeaponImageInit {
     @PostConstruct
     public void init() throws IOException {
         for (Resource resource : resources) {
-            ClassPathResource classPathResource = new ClassPathResource("/image/weapon" + resource.getFilename());
+            ClassPathResource classPathResource = new ClassPathResource("/image/weapon/" + resource.getFilename());
             String fullFilePath = serverUrl + "/" + classPathResource.getPath();
+            System.out.println("classPathResource = " + classPathResource.getPath());
             imageFileNameList.add(resource.getFilename());
             imageFilePathList.add(fullFilePath);
         }
