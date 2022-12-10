@@ -138,17 +138,18 @@ const Forge = () => {
     }
   };
 
-  const handleTryButtonClick = () => {
-    setShowDimmed(true);
-    refineSound.play();
+  const handleTryButtonClick = async () => {
     const use = [];
     if (useProtectShield) use.push(PROTECT_SHIELD);
-    httpPostRefine({ use }).then((refineResult) => {
+    try {
+      const refineResult = await httpPostRefine({ use });
+      setShowDimmed(true);
+      refineSound.play();
       setTimeout(() => {
         update(refineResult);
         setShowDimmed(false);
       }, 100);
-    });
+    } catch (error) {}
   };
 
   const [maxLevel, setMaxLevel] = useState(0);
