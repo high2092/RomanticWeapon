@@ -20,10 +20,10 @@ public class InventoryService {
 
     private final UserInventoryRepository userInventoryRepository;
     public InventoryInfoResponseDto getInventoryInfo(User user) {
-        UserInventory userInventory = user.getUserInventory();
+        List<UserInventory> userInventory = user.getUserInventory();
         InventoryInfoResponseDto inventoryInfoResponseDto = new InventoryInfoResponseDto();
         inventoryInfoResponseDto.setGold(user.getGold());
-        userInventoryRepository.findAll()
+        userInventoryRepository.findByUser(user)
                 .stream()
                 .forEach(inventory -> {
                     inventoryInfoResponseDto.getInventory()

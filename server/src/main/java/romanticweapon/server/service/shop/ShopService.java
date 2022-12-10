@@ -37,8 +37,8 @@ public class ShopService {
         Item item = ShopConstant.itemList[idx];
         UserInventory userInventory;
 
-        if(userInventoryRepository.findByIdx(idx).isPresent()) {
-            userInventory = userInventoryRepository.findByIdx(idx).get();
+        if(userInventoryRepository.findByIdxAndUser(idx, user).isPresent()) {
+            userInventory = userInventoryRepository.findByIdxAndUser(idx, user).get();
         }
         else {
             userInventory = UserInventory.builder()
