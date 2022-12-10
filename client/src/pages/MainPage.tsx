@@ -12,7 +12,7 @@ import { httpGet } from '../utils/utils';
 import { useInventory } from '../hooks/useInventory';
 
 const httpGetLogout = async () => {
-  const response = await httpGet(`${HOST}/logout`);
+  const response = await httpGet(`${HOST}/auth/logout`);
   return response;
 };
 

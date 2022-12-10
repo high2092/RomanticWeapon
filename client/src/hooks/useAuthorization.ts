@@ -6,7 +6,7 @@ export const useAuthorization = () => {
   const [hasLogin, setHasLogin] = useState<boolean>();
 
   const httpGetCheckLogin = async () => {
-    const response = await httpGet(`${HOST}/check-login`);
+    const response = await httpGet(`${HOST}/auth/check-login`);
     return response.status === 200;
   };
 
