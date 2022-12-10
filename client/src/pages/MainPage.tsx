@@ -10,6 +10,7 @@ import settingImgUrl from '../assets/setting.png';
 import inventoryImgUrl from '../assets/inventory.png';
 import { httpGet } from '../utils/utils';
 import { useInventory } from '../hooks/useInventory';
+import { BGMController } from '../cores/BGMController';
 
 const httpGetLogout = async () => {
   const response = await httpGet(`${HOST}/auth/logout`);
@@ -40,10 +41,10 @@ const MainPage = () => {
 
   // BGM
   useEffect(() => {
-    const bgm = mainBgm();
-    bgm.play();
+    BGMController.setBGM(mainBgm());
+    BGMController.play();
     return () => {
-      bgm.pause();
+      BGMController.pause();
     };
   }, []);
 
