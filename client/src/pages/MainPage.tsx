@@ -3,7 +3,7 @@ import Forge from '../components/Forge';
 import * as S from './MainPage.style';
 import { useNavigate } from 'react-router-dom';
 import { HOST, mainBgm } from '../constants/constants';
-import dunjeonImageUrl from '../assets/dunjeon.gif';
+import dungeonImageUrl from '../assets/dungeon.gif';
 import rankingImageUrl from '../assets/ranking.gif';
 import shopImageUrl from '../assets/shop.png';
 import settingImgUrl from '../assets/setting.png';
@@ -47,6 +47,10 @@ const MainPage = () => {
     navigate('/ranking');
   };
 
+  const handleDungeonButtonClick = () => {
+    navigate('/dungeon');
+  };
+
   // BGM
   useEffect(() => {
     BGMController.setBGM(mainBgm());
@@ -67,7 +71,7 @@ const MainPage = () => {
         <div>▶︎</div>
         <img src={rankingImageUrl} onClick={handleRankingButtonClick} />
         <img src={shopImageUrl} width="35" onClick={handleShopButtonClick} />
-        <img src={dunjeonImageUrl} />
+        <img src={dungeonImageUrl} onClick={handleDungeonButtonClick} />
         <img
           src={inventoryImgUrl}
           width="35"
