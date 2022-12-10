@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
-                .antMatchers("/login", "/register", "/auth/**", "/check-login", "/image/**").permitAll()
+                .antMatchers("/login", "/register", "/auth/**", "/check-login", "/image/**", "/logout").permitAll()
                 .antMatchers("/user/main").hasRole("USER")
 
                 .anyRequest().authenticated()
