@@ -8,6 +8,7 @@ import { RestrictedRoutes } from './components/routes/RestrictedRoutes';
 import { ShopPage } from './pages/ShopPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { RankingPage } from './pages/RankingPage';
+import { DungeonPage } from './pages/DungeonPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route index element={<MainPage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="dungeon" element={<DungeonPage />} />
           </Route>
           <Route path="/" element={<RestrictedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
