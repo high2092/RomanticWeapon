@@ -50,7 +50,7 @@ export const RegisterForm = () => {
 
     console.log(body);
     try {
-      const response = await httpPost(`${HOST}/register`, body);
+      const response = await httpPost(`${HOST}/auth/register`, body);
       if (response.status === 200) {
         navigate('/login');
       }
