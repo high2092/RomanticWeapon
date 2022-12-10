@@ -43,6 +43,10 @@ const MainPage = () => {
 
   const handleSettingButtonClick = () => {};
 
+  const handleRankingButtonClick = () => {
+    navigate('/ranking');
+  };
+
   // BGM
   useEffect(() => {
     BGMController.setBGM(mainBgm());
@@ -61,7 +65,7 @@ const MainPage = () => {
 
       <S.Menu>
         <div>▶︎</div>
-        <img src={rankingImageUrl} />
+        <img src={rankingImageUrl} onClick={handleRankingButtonClick} />
         <img src={shopImageUrl} width="35" onClick={handleShopButtonClick} />
         <img src={dunjeonImageUrl} />
         <img

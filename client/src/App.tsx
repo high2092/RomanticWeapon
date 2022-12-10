@@ -7,6 +7,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { RestrictedRoutes } from './components/routes/RestrictedRoutes';
 import { ShopPage } from './pages/ShopPage';
 import { InventoryPage } from './pages/InventoryPage';
+import { RankingPage } from './pages/RankingPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
           </Route>
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/ranking" element={<RankingPage />} />
         </Routes>
       </BrowserRouter>
     </>
