@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Deprecated
 public class OAuthController {
 
     private final OAuthService oAuthService;
