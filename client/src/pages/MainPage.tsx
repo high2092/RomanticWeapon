@@ -12,6 +12,11 @@ import { httpGet } from '../utils/utils';
 import { useAtom } from 'jotai';
 import { inventoryAtom } from '../cores/store';
 
+const httpGetLogout = async () => {
+  const response = await httpGet(`${HOST}/logout`);
+  return response;
+}
+
 const httpGetInventory = async () => {
   const response = await httpGet(`${HOST}/inventory`);
   const inventory = await response.json();
@@ -24,6 +29,15 @@ const MainPage = () => {
 
   const handleShopButtonClick = () => {
     navigate('/shop');
+  };
+
+  const handleLogoutButtonClick = async () => {
+    try {
+      const response = await httpGetLogout();
+      if (response.status === 200) navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInventoryButtonClick = () => {
@@ -51,6 +65,9 @@ const MainPage = () => {
 
   return (
     <S.MainPage>
+      <S.LogoutButton onClick={handleLogoutButtonClick}>
+        로그아웃
+      </S.LogoutButton>
       <Forge />
 
       <S.Menu>

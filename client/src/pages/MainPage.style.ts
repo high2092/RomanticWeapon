@@ -22,3 +22,9 @@ export const Menu = styled.div`
   justify-content: space-evenly;
   align-items: center;
 `;
+
+export const LogoutButton = styled.button`
+  position: fixed;
+  top: 0;
+  right: 0;
+`;
