@@ -14,7 +14,7 @@ declare module '.*png' {
 }
 
 interface InventoryItem {
-  itemIdx: number;
+  idx: number;
   amount: number;
   position?: number;
 }
