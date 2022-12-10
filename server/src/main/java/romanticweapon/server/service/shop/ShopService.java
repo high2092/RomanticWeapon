@@ -10,6 +10,7 @@ import romanticweapon.server.domain.entity.user.UserInventory;
 import romanticweapon.server.exception.exception.NotEnoughGoldException;
 import romanticweapon.server.repository.auth.UserRepository;
 import romanticweapon.server.repository.inventory.UserInventoryRepository;
+import romanticweapon.server.repository.item.ItemImageRepository;
 import romanticweapon.server.util.staticc.Item;
 import romanticweapon.server.util.staticc.ShopConstant;
 
@@ -25,10 +26,15 @@ public class ShopService {
     private final UserRepository userRepository;
     private final UserInventoryRepository userInventoryRepository;
 
+    private final ItemImageRepository itemImageRepository;
     public List<Item> getItemList() {
         List<Item> items = new ArrayList<>();
         items.addAll(Arrays.asList(ShopConstant.itemList));
         items.remove(null);
+        items.stream()
+                .forEach(item -> {
+                    item.setImgUrl(itemImageRepository.findById(item.getIdx()).get().getFilePath());
+                });
         return items;
     }
 

@@ -7,8 +7,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import romanticweapon.server.domain.entity.item.ItemImage;
 import romanticweapon.server.domain.entity.weapon.WeaponImage;
 import romanticweapon.server.domain.enumm.weapon.WeaponType;
+import romanticweapon.server.repository.item.ItemImageRepository;
 import romanticweapon.server.repository.weapon.WeaponImageRepository;
 
 import javax.annotation.PostConstruct;
@@ -20,13 +22,13 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class WeaponImageInit {
+public class ItemImageInit {
 
     private final ApplicationContext applicationContext;
 
-    private final WeaponImageRepository weaponImageRepository;
+    private final ItemImageRepository itemImageRepository;
 
-    @Value("classpath:static/image/weapon/*")
+    @Value("classpath:static/image/item/*")
     private Resource[] resources;
 
     @Value("${custom.server-url}")
@@ -38,7 +40,7 @@ public class WeaponImageInit {
     @PostConstruct
     public void init() throws IOException {
         for (Resource resource : resources) {
-            ClassPathResource classPathResource = new ClassPathResource("/image/weapon" + resource.getFilename());
+            ClassPathResource classPathResource = new ClassPathResource("/image/item" + resource.getFilename());
             String fullFilePath = serverUrl + "/" + classPathResource.getPath();
             imageFileNameList.add(resource.getFilename());
             imageFilePathList.add(fullFilePath);
@@ -56,14 +58,13 @@ public class WeaponImageInit {
     }
 
     private void saveImageIfNotExist(String currentFileName, String currentFilePath, int idx) {
-        if(!weaponImageRepository.findByFileName(currentFileName).isPresent()) {
-            WeaponImage weaponImage = WeaponImage.builder()
+        if(!itemImageRepository.findByFileName(currentFileName).isPresent()) {
+            ItemImage itemImage = ItemImage.builder()
+                    .id(idx+1L)
                     .fileName(currentFileName)
                     .filePath(currentFilePath)
-                    .type(WeaponType.SWORD)
-                    .upgrade((long) idx)
                     .build();
-            weaponImageRepository.save(weaponImage);
+            itemImageRepository.save(itemImage);
         }
     }
 }
