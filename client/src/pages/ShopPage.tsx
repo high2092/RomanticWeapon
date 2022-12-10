@@ -6,6 +6,7 @@ import * as S from './ShopPage.style';
 import goldImageUrl from '../assets/gold.gif';
 import { goldAtom } from '../cores/store';
 import { useAtom } from 'jotai';
+import { BGMController } from '../cores/BGMController';
 
 export const ShopPage = () => {
   const navigate = useNavigate();
@@ -13,10 +14,10 @@ export const ShopPage = () => {
   const [gold] = useAtom(goldAtom);
 
   useEffect(() => {
-    const bgm = shopBgm();
-    bgm.play();
+    BGMController.setBGM(shopBgm());
+    BGMController.play();
     return () => {
-      bgm.pause();
+      BGMController.pause();
     };
   }, []);
 
