@@ -9,23 +9,17 @@ import shopImageUrl from '../assets/shop.png';
 import settingImgUrl from '../assets/setting.png';
 import inventoryImgUrl from '../assets/inventory.png';
 import { httpGet } from '../utils/utils';
-import { useAtom } from 'jotai';
-import { inventoryAtom } from '../cores/store';
+import { useInventory } from '../hooks/useInventory';
 
 const httpGetLogout = async () => {
   const response = await httpGet(`${HOST}/logout`);
   return response;
-}
-
-const httpGetInventory = async () => {
-  const response = await httpGet(`${HOST}/inventory`);
-  const inventory = await response.json();
-  return inventory;
 };
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [, setInventory] = useAtom(inventoryAtom);
+
+  useInventory();
 
   const handleShopButtonClick = () => {
     navigate('/shop');
@@ -51,16 +45,6 @@ const MainPage = () => {
     return () => {
       bgm.pause();
     };
-  }, []);
-
-  const fetchInventory = async () => {
-    const { inventory } = await httpGetInventory();
-    setInventory(inventory);
-  };
-
-  // 인벤토리
-  useEffect(() => {
-    fetchInventory();
   }, []);
 
   return (

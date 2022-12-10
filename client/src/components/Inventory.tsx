@@ -4,7 +4,7 @@ import { inventoryAtom, itemDictionary } from '../cores/store';
 import * as S from './Inventory.style';
 
 export const Inventory = () => {
-  const [inventory, setInventory] = useAtom(inventoryAtom);
+  const [inventory] = useAtom(inventoryAtom);
   return (
     <S.Inventory>
       {inventory.map(({ idx, amount }) => (

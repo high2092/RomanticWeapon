@@ -3,8 +3,7 @@ import * as S from './Shop.style';
 import shieldImgUrl from '../assets/shield.png';
 import { httpPost } from '../utils/utils';
 import { HOST } from '../constants/constants';
-import { goldAtom, inventoryAtom, inventoryIndexMap } from '../cores/store';
-import { useAtom } from 'jotai';
+import { useInventory } from '../hooks/useInventory';
 
 const dummyItemList = [
   {
@@ -41,15 +40,16 @@ const httpPostBuyItem = async (idx: number) => {
 
 export const Shop = () => {
   const itemList = dummyItemList;
-  const [, setGold] = useAtom(goldAtom);
-  const [inventory, setInventory] = useAtom(inventoryAtom);
+
+  const { inventory, setInventory, getItemCount, insertItem, setGold } =
+    useInventory();
 
   const handleItemClick = (idx: number) => async () => {
     try {
       const response = await httpPostBuyItem(idx);
       if (response.status === 200) {
         const { gold, amount } = await response.json();
-        insertItem(inventory, inventoryIndexMap, idx, amount);
+        insertItem(idx, amount);
         setGold(gold);
         setInventory([...inventory]);
       }
@@ -74,38 +74,10 @@ export const Shop = () => {
           <S.Item key={idx} onClick={handleItemClick(idx)}>
             <img src={imgUrl} />
             <div>{name}</div>
-            <div>
-              보유 개수: {getItemCount(inventory, inventoryIndexMap, idx)}
-            </div>
+            <div>보유 개수: {getItemCount(idx)}</div>
           </S.Item>
         ))}
       </S.Showcase>
     </S.Shop>
   );
-};
-
-const getItemCount = (
-  inventory: InventoryItem[],
-  inventoryIndexMap: Map<number, number>,
-  idx: number
-) => {
-  const targetItemInventoryIdx = inventoryIndexMap.get(idx);
-  return targetItemInventoryIdx !== undefined
-    ? inventory[targetItemInventoryIdx].amount
-    : 0;
-};
-
-const insertItem = (
-  inventory: InventoryItem[],
-  inventoryIndexMap: Map<number, number>,
-  idx: number,
-  amount: number
-) => {
-  const targetItemInventoryIdx = inventoryIndexMap.get(idx);
-  if (targetItemInventoryIdx === undefined) {
-    inventory.push({ idx, amount });
-    inventoryIndexMap.set(idx, inventory.length - 1);
-  } else {
-    inventory[targetItemInventoryIdx].amount = amount;
-  }
 };
