@@ -8,7 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import romanticweapon.server.domain.enumm.auth.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,18 +39,17 @@ public class User implements UserDetails {
     @Column(columnDefinition = "LONG DEFAULT 99999")
     private Long gold;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
-    private UserInventory userInventory;
+    @OneToMany(mappedBy = "user")
+    private List<UserInventory> userInventory = new ArrayList<>();
 
     @Builder
-    public User(Long gold, String userId, String password, String username, Role role, Long targetUpgrade, UserInventory userInventory) {
+    public User(Long gold, String userId, String password, String username, Role role, Long targetUpgrade) {
         this.gold = gold;
         this.userId = userId;
         this.password = password;
         this.username = username;
         this.role = role;
         this.targetUpgrade = targetUpgrade;
-        this.userInventory = userInventory;
     }
 
     @Override

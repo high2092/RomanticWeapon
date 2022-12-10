@@ -18,7 +18,7 @@ public class UserInventory {
 
     private int amount;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
