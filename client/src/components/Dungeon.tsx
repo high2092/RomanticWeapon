@@ -1,11 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mob00Animation from '../assets/mob00.gif';
 import mob00HitImg from '../assets/mob00hit.png';
+import mob00DieAnimation from '../assets/mob00die.gif';
+import { mob00DieSound, mob00HitSound } from '../constants/constants';
 import * as S from './Dungeon.style';
 
 const MIN = 0;
 const MAX = 100;
 const STEP = 1;
+
+let MOB_HP = 1000;
+const WEAPON_POWER = 100;
+
+const mockHttpPostAttack = (hitpoint: number) => {
+  const critical = 0.02 * (100 - Math.abs(hitpoint));
+  const damage = WEAPON_POWER * critical;
+  MOB_HP -= damage;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ hp: MOB_HP });
+    }, 0);
+  });
+};
 
 const useInterval = (callback: any, delay: number) => {
   const savedCallback = useRef<any>(null);
@@ -41,15 +57,34 @@ export const Dungeon = () => {
     if (e.key !== ' ') return;
     if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
-    console.log('diff:', hitBoxLeftRef.current - leftRef.current);
 
-    setHixBoxLeft(Math.random() * MAX * 0.7);
+    const diff = hitBoxLeftRef.current - leftRef.current;
+    console.log('diff:', diff);
 
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
+    mockHttpPostAttack(diff).then(({ hp }: any) => {
       if (!mobImageUrlRef || !mobImageUrlRef.current) return;
-      mobImageUrlRef.current.src = mob00Animation;
-    }, 600);
+
+      setHixBoxLeft(Math.random() * MAX * 0.7);
+
+      let stiffen = 600;
+
+      if (hp <= 0) {
+        mobImageUrlRef.current.src = mob00DieAnimation;
+        stiffen = 1200;
+        MOB_HP = 1000;
+        mob00DieSound().play();
+      } else {
+        mobImageUrlRef.current.src = mob00HitImg;
+        mob00HitSound().play();
+      }
+
+      console.log('hp:', hp);
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        if (!mobImageUrlRef || !mobImageUrlRef.current) return;
+        mobImageUrlRef.current.src = mob00Animation;
+      }, stiffen);
+    });
   };
 
   useEffect(() => {
