@@ -23,7 +23,7 @@ export const Hit = styled.img<{ left: string }>`
   position: relative;
 
   left: ${(props) => props.left};
-  transition: 0.5s all;
+  transform: translate(-50%, 0);
 `;
 
 export const HitBox = styled.div<{ left: string }>`
