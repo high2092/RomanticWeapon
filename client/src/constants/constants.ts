@@ -4,6 +4,8 @@ import refineFailureSoundUrl from '../assets/refine-failure.mp3';
 import bgmUrl from '../assets/bgm.mp3';
 import achievementSoundUrl from '../assets/achievement.mp3';
 import shopBgmUrl from '../assets/shop.mp3';
+import mob00HitSoundUrl from '../assets/mob00hit.mp3';
+import mob00DieSoundUrl from '../assets/mob00die.mp3';
 
 const MAIN_BGM_VOLUME = 0.04;
 const SHOP_BGM_VOLUME = 0.1;
@@ -20,6 +22,16 @@ refineSuccessSound.volume = REFINE_SUCCESS_VOLUME;
 
 export const refineFailureSound = new Audio(refineFailureSoundUrl);
 refineFailureSound.volume = REFINE_FAILURE_VOLUME;
+
+export const mob00HitSound = () => {
+  const sound = new Audio(mob00HitSoundUrl);
+  return sound;
+};
+
+export const mob00DieSound = () => {
+  const sound = new Audio(mob00DieSoundUrl);
+  return sound;
+};
 
 export const achievementSound = () => {
   const sound = new Audio(achievementSoundUrl);
