@@ -5,7 +5,7 @@ import * as S from './Dungeon.style';
 
 const MIN = 0;
 const MAX = 100;
-const STEP = 10;
+const STEP = 1;
 
 const useInterval = (callback: any, delay: number) => {
   const savedCallback = useRef<any>(null);
@@ -29,22 +29,19 @@ export const Dungeon = () => {
   const mobImageUrlRef = useRef<HTMLImageElement | null>(null);
   const timeoutRef = useRef<any>(0);
 
-  const [left, setLeft] = useState(3);
+  const [left, setLeft] = useState(0);
+  const leftRef = useRef(0);
+
   const [direction, setDirection] = useState(1);
 
   const [hitBoxLeft, setHixBoxLeft] = useState(Math.random() * MAX * 0.7);
-
-  useEffect(() => {
-    console.log(hitBoxLeft);
-  }, [hitBoxLeft]);
-
-  const leftRef = useRef(0);
+  const hitBoxLeftRef = useRef(hitBoxLeft);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key !== ' ') return;
     if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
-    console.log(leftRef.current);
+    console.log('diff:', hitBoxLeftRef.current - leftRef.current);
 
     setHixBoxLeft(Math.random() * MAX * 0.7);
 
@@ -62,16 +59,20 @@ export const Dungeon = () => {
     };
   }, []);
 
-  const a = useInterval(() => {
+  useInterval(() => {
     setLeft((left) => left + direction * STEP);
 
     if (left >= MAX) setDirection(-1);
     if (left <= MIN) setDirection(1);
-  }, 100);
+  }, 10);
 
   useEffect(() => {
     leftRef.current = left;
   }, [left]);
+
+  useEffect(() => {
+    hitBoxLeftRef.current = hitBoxLeft;
+  }, [hitBoxLeft]);
 
   return (
     <>
