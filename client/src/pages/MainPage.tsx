@@ -48,7 +48,7 @@ const MainPage = () => {
   };
 
   const handleDungeonButtonClick = () => {
-    navigate('/dungeon');
+    navigate('/map');
   };
 
   // BGM
