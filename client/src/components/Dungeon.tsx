@@ -4,6 +4,7 @@ import mob00HitImg from '../assets/mob00hit.png';
 import mob00DieAnimation from '../assets/mob00die.gif';
 import { mob00DieSound, mob00HitSound } from '../constants/constants';
 import * as S from './Dungeon.style';
+import dummySkillIconUrl from '../assets/4211008.png';
 
 const MIN = 0;
 const MAX = 100;
@@ -53,9 +54,18 @@ export const Dungeon = () => {
   const [hitBoxLeft, setHixBoxLeft] = useState(Math.random() * MAX * 0.7);
   const hitBoxLeftRef = useRef(hitBoxLeft);
 
+  const [showDimmed, setShowDimmed] = useState(false);
+  const showDimmedRef = useRef(showDimmed);
+
+  useEffect(() => {
+    showDimmedRef.current = showDimmed;
+  }, [showDimmed]);
+
+  // TODO: Ref 없애고 투명한 input 요소 + React.KeyboardEvent onKeyPress 이용하기
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key !== ' ') return;
     if (!mobImageUrlRef || !mobImageUrlRef.current) return;
+    if (showDimmedRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
 
     const diff = hitBoxLeftRef.current - leftRef.current;
@@ -73,6 +83,7 @@ export const Dungeon = () => {
         stiffen = 1200;
         MOB_HP = 1000;
         mob00DieSound().play();
+        setShowDimmed(true);
       } else {
         mobImageUrlRef.current.src = mob00HitImg;
         mob00HitSound().play();
@@ -109,6 +120,11 @@ export const Dungeon = () => {
     hitBoxLeftRef.current = hitBoxLeft;
   }, [hitBoxLeft]);
 
+  const handleCardClick = (idx: number) => () => {
+    console.log(idx);
+    setShowDimmed(false);
+  };
+
   return (
     <>
       <S.Mob>
@@ -121,6 +137,93 @@ export const Dungeon = () => {
         />
         <S.HitBox left={`${hitBoxLeft}%`} />
       </S.Bar>
+      {showDimmed && (
+        <ReinforcementCardSelectionUI
+          reinforcementCards={[]}
+          handleCardClick={handleCardClick}
+        />
+      )}
     </>
+  );
+};
+
+const dummyReinforcementCards = [
+  {
+    idx: 1,
+    title: '샤프 아이즈',
+    imgUrl:
+      'https://w.namu.la/s/84ad52c18ef5eb0f09ccf2d3eda0380c7f4881ae74f0b60a3af3925fa00617331de7159699db9ab455e133ad5e373d18ae6c37adf8d73f428f58a0e9f6ab169caa6c1e5bf33a425e33d0be3547c13706884ec9b2a8b3ed675bc1ea58d504946d',
+    description: '크리티컬 확률이 5% 증가합니다.',
+  },
+  {
+    idx: 4,
+    title: '쉐도우 파트너',
+    imgUrl: dummySkillIconUrl,
+    description: '데미지 5%의 추가타가 발생합니다.',
+  },
+  {
+    idx: 3,
+    title: '퍼미에이트',
+    imgUrl:
+      'https://w.namu.la/s/b78e2f58c290a60520803c3afc679fa0e412263a50034fc16a9514fee4acb125900535db13f54b782d851bc36052bd8546e3066efffa6f60b2d1fa6e6114d3819e1f233595d05142c0be391b52e0321bf2932525ed3cac7136185ac7337dd549',
+    description: '공격 대상의 방어율을 10% 무시합니다.',
+  },
+];
+
+interface Card {
+  idx: number;
+  title: string;
+  imgUrl: string;
+  description: string;
+}
+
+interface ReinforcementCardSelectionUIProps {
+  reinforcementCards: Card[];
+  handleCardClick: (idx: number) => () => void;
+}
+
+export const ReinforcementCardSelectionUI = ({
+  reinforcementCards,
+  handleCardClick,
+}: ReinforcementCardSelectionUIProps) => {
+  return (
+    <S.ReinforcementCardSelectionUI>
+      {dummyReinforcementCards.map(({ idx, title, imgUrl, description }) => (
+        <ReinforcementCard
+          key={idx}
+          idx={idx}
+          title={title}
+          imgUrl={imgUrl}
+          description={description}
+          handleCardClick={handleCardClick}
+        />
+      ))}
+    </S.ReinforcementCardSelectionUI>
+  );
+};
+
+interface ReinforcementCardProps {
+  idx: number;
+  imgUrl: string;
+  title: string;
+  description: string;
+  handleCardClick: (idx: number) => () => void;
+}
+
+const ReinforcementCard = ({
+  idx,
+  title,
+  imgUrl,
+  description,
+  handleCardClick,
+}: ReinforcementCardProps) => {
+  return (
+    <S.ReinforcementCard onClick={handleCardClick(idx)}>
+      <S.ReinforcementCardIcon src={imgUrl} />
+      <S.ReinforcementCardTitle>{title}</S.ReinforcementCardTitle>
+      <S.ReinforcementCardDescription>
+        {description}
+      </S.ReinforcementCardDescription>
+    </S.ReinforcementCard>
   );
 };
