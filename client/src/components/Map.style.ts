@@ -12,6 +12,9 @@ export const MapList = styled.div`
 `;
 
 export const Map = styled.div`
+  background-color: #eeeeee;
+  padding: 2rem;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
