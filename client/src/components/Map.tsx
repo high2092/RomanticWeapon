@@ -33,6 +33,7 @@ export const Map = ({ idx, imgUrl, title }: Map) => {
     <S.Map>
       <S.MapIcon src={imgUrl} onClick={handleMapClick(idx)} />
       <div>{title}</div>
+      <div>적정 재련 단계: 1 ~ 5</div>
     </S.Map>
   );
 };
