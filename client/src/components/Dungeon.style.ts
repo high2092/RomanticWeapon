@@ -169,3 +169,8 @@ export const ReinforcementCardDescription = styled.div`
   word-wrap: break-word;
   margin: 2rem;
 `;
+
+export const KeyboardInput = styled.input`
+  position: absolute;
+  opacity: 0;
+`;
