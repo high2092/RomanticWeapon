@@ -12,4 +12,6 @@ export const DungeonPage = styled.div<{ idx: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  overflow: hidden;
 `;

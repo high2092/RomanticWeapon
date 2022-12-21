@@ -11,7 +11,6 @@ export const ShopPage = styled.div`
 `;
 
 export const GoldSection = styled.div`
-  margin-left: 95rem;
   display: flex;
   align-items: center;
 `;
@@ -25,4 +24,10 @@ export const GoldIcon = styled.img`
 export const Gold = styled.div`
   margin: auto;
   vertical-align: middle;
+`;
+
+export const BackspaceButton = styled.button`
+  position: fixed;
+  top: 0;
+  left: 0;
 `;

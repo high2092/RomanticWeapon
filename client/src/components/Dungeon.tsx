@@ -64,8 +64,13 @@ export const Dungeon = () => {
   // TODO: Ref 없애고 투명한 input 요소 + React.KeyboardEvent onKeyPress 이용하기
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key !== ' ') return;
-    if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     if (showDimmedRef.current) return;
+
+    hit();
+  };
+
+  const hit = () => {
+    if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
 
     const diff = hitBoxLeftRef.current - leftRef.current;
@@ -97,7 +102,6 @@ export const Dungeon = () => {
       }, stiffen);
     });
   };
-
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -125,8 +129,12 @@ export const Dungeon = () => {
     setShowDimmed(false);
   };
 
+  const handleHitButtonClick = () => {
+    hit();
+  };
+
   return (
-    <>
+    <S.Dungeon>
       <S.Mob>
         <img src={mob00Animation} width="100" ref={mobImageUrlRef} />
       </S.Mob>
@@ -137,13 +145,14 @@ export const Dungeon = () => {
         />
         <S.HitBox left={`${hitBoxLeft}%`} />
       </S.Bar>
+      <S.HitButton onClick={handleHitButtonClick}>HIT!</S.HitButton>
       {showDimmed && (
         <ReinforcementCardSelectionUI
           reinforcementCards={[]}
           handleCardClick={handleCardClick}
         />
       )}
-    </>
+    </S.Dungeon>
   );
 };
 
