@@ -21,6 +21,11 @@ export const Menu = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
+  @media screen and (max-width: 500px) {
+    width: 27rem;
+    right: -2rem;
+  }
 `;
 
 export const LogoutButton = styled.button`

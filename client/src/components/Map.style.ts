@@ -9,6 +9,10 @@ export const MapIcon = styled.img`
 
 export const MapList = styled.div`
   display: flex;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Map = styled.div`
