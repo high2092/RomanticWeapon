@@ -60,6 +60,12 @@ export const Dungeon = () => {
     if (e.key !== ' ') return;
     if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     if (showDimmed) return;
+
+    hit();
+  };
+
+  const hit = () => {
+    if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
 
     const diff = hitBoxLeft - left;
@@ -113,8 +119,12 @@ export const Dungeon = () => {
     };
   }, []);
 
+  const handleHitButtonClick = () => {
+    hit();
+  };
+
   return (
-    <>
+    <S.Dungeon>
       <S.KeyboardInput
         onKeyDown={handleKeyDown}
         ref={inputRef}
@@ -130,13 +140,14 @@ export const Dungeon = () => {
         />
         <S.HitBox left={`${hitBoxLeft}%`} />
       </S.Bar>
+      <S.HitButton onClick={handleHitButtonClick}>HIT!</S.HitButton>
       {showDimmed && (
         <ReinforcementCardSelectionUI
           reinforcementCards={[]}
           handleCardClick={handleCardClick}
         />
       )}
-    </>
+    </S.Dungeon>
   );
 };
 

@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 export const Shop = styled.div`
   display: flex;
-  width: 100rem;
-  height: 45rem;
+  width: 70%;
+  height: 70%;
 
   border-radius: 2rem;
-  overflow: hidden;
 `;
 
 export const Tab = styled.div`
@@ -36,11 +35,17 @@ export const Showcase = styled.div`
   display: grid;
   grid-template-rows: repeat(4, 1fr);
   grid-template-columns: repeat(7, 1fr);
+
+  @media screen and (max-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const Item = styled.div`
   display: flex;
 
+  width: 5rem;
+  height: 5rem;
   margin: 2rem;
   background-color: antiquewhite;
 

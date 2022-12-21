@@ -36,10 +36,21 @@ const fall = keyframes`
   }
 `;
 
-export const Mob = styled.div``;
+export const Dungeon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const Mob = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30rem;
+`;
 
 export const Bar = styled.div`
-  position: fixed;
+  /* position: fixed; */
 
   display: flex;
   align-items: center;
@@ -50,6 +61,29 @@ export const Bar = styled.div`
   background-color: #ffc457;
 
   border-radius: 1rem;
+
+  @media screen and (max-width: 500px) {
+    width: 20rem;
+  }
+`;
+
+export const HitButton = styled.button`
+  display: none;
+  outline: none;
+  border: none;
+  margin-top: 2rem;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+
+  &:active {
+    background-color: grey;
+    box-shadow: 0 0.2rem #666;
+    transform: translateY(0.1rem);
+  }
+
+  @media screen and (max-width: 500px) {
+    display: block;
+  }
 `;
 
 export const Hit = styled.img<{ left: string }>`
@@ -77,6 +111,9 @@ export const HitBox = styled.div<{ left: string }>`
 
 export const ReinforcementCardSelectionUI = styled.div`
   position: fixed;
+  top: 0;
+  left: 0;
+
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -84,6 +121,10 @@ export const ReinforcementCardSelectionUI = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
   animation: ${fall} 1s;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 export const ReinforcementCard = styled.div`
@@ -99,14 +140,24 @@ export const ReinforcementCard = styled.div`
   align-items: center;
 
   animation: ${spread} 1s;
+
+  @media screen and (max-width: 500px) {
+    height: 15rem;
+  }
 `;
 
 const REINFORCEMENT_CARD_ICON_SIZE = '8rem';
+const REINFORCEMENT_CARD_ICON_SIZE_MOBILE = '5rem';
 export const ReinforcementCardIcon = styled.img`
   width: ${REINFORCEMENT_CARD_ICON_SIZE};
   height: ${REINFORCEMENT_CARD_ICON_SIZE};
 
   margin: 2rem;
+
+  @media screen and (max-width: 500px) {
+    width: ${REINFORCEMENT_CARD_ICON_SIZE_MOBILE};
+    height: ${REINFORCEMENT_CARD_ICON_SIZE_MOBILE};
+  }
 `;
 
 export const ReinforcementCardTitle = styled.div`

@@ -23,7 +23,9 @@ export const ShopPage = () => {
 
   return (
     <S.ShopPage>
-      <div onClick={() => navigate(-1)}>뒤로 가기</div>
+      <S.BackspaceButton onClick={() => navigate(-1)}>
+        뒤로 가기
+      </S.BackspaceButton>
       <S.GoldSection>
         <div>
           <S.GoldIcon src={goldImageUrl}></S.GoldIcon>

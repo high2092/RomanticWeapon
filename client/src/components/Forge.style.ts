@@ -10,8 +10,9 @@ export const Forge = styled.div`
   /* justify-content: space-between; */
   align-items: center;
   white-space: nowrap;
-  * {
-    margin: 0 1rem;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
   }
 `;
 
@@ -29,11 +30,18 @@ export const Logs = styled.div`
   overflow-y: scroll;
   border-radius: 20px;
   padding: 0.5rem;
+  margin: auto;
   border: 1px solid black;
+
+  @media screen and (max-width: 500px) {
+    width: 20rem;
+    height: 10rem;
+  }
 `;
 
 export const LogsContainer = styled.div`
-  width: 20rem;
+  width: 21rem;
+  /* background-color: red; */
   flex: 2;
 `;
 
@@ -71,6 +79,11 @@ export const WeaponImage = styled.img`
   padding: 2rem;
   /* border: 1px solid #dddddd; */
   margin: 1rem;
+
+  @media screen and (max-width: 500px) {
+    width: 4rem;
+    height: 4rem;
+  }
 `;
 
 export const SizedText = styled.div<{ fontSize: string }>`
@@ -117,6 +130,11 @@ export const RefineResultAnimation = styled.img`
   top: -30%;
   left: 68.5%;
   width: 14rem;
+
+  @media screen and (max-width: 500px) {
+    top: -43%;
+    left: 20.5%;
+  }
 `;
 
 export const RefineSuccessAnimation = styled.img`
@@ -124,4 +142,9 @@ export const RefineSuccessAnimation = styled.img`
   top: -47%;
   left: 64%;
   width: 21rem;
+
+  @media screen and (max-width: 500px) {
+    top: -60%;
+    left: 10%;
+  }
 `;
