@@ -1,0 +1,17 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+          registry-url: "https://npm.pkg.github.com"
+      - run: echo HOST=${{ secrets.HOST }} >> client/.env
+      - run: echo DEVHOST=${{ secrets.DEVHOST }} >> client/.env
+      - run: sh deploy.sh
