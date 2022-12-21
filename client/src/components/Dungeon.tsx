@@ -47,19 +47,24 @@ export const Dungeon = () => {
   const timeoutRef = useRef<any>(0);
 
   const [left, setLeft] = useState(0);
+  const leftRef = useRef(0);
+
   const [direction, setDirection] = useState(1);
+
   const [hitBoxLeft, setHixBoxLeft] = useState(Math.random() * MAX * 0.7);
+  const hitBoxLeftRef = useRef(hitBoxLeft);
+
   const [showDimmed, setShowDimmed] = useState(false);
-  const focusOnMob = () => {
-    inputRef.current?.focus();
-  };
+  const showDimmedRef = useRef(showDimmed);
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    showDimmedRef.current = showDimmed;
+  }, [showDimmed]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  // TODO: Ref 없애고 투명한 input 요소 + React.KeyboardEvent onKeyPress 이용하기
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key !== ' ') return;
-    if (!mobImageUrlRef || !mobImageUrlRef.current) return;
-    if (showDimmed) return;
+    if (showDimmedRef.current) return;
 
     hit();
   };
@@ -68,7 +73,7 @@ export const Dungeon = () => {
     if (!mobImageUrlRef || !mobImageUrlRef.current) return;
     mobImageUrlRef.current.src = mob00HitImg;
 
-    const diff = hitBoxLeft - left;
+    const diff = hitBoxLeftRef.current - leftRef.current;
     console.log('diff:', diff);
 
     mockHttpPostAttack(diff).then(({ hp }: any) => {
@@ -97,6 +102,12 @@ export const Dungeon = () => {
       }, stiffen);
     });
   };
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   useInterval(() => {
     setLeft((left) => left + direction * STEP);
@@ -105,19 +116,18 @@ export const Dungeon = () => {
     if (left <= MIN) setDirection(1);
   }, 10);
 
+  useEffect(() => {
+    leftRef.current = left;
+  }, [left]);
+
+  useEffect(() => {
+    hitBoxLeftRef.current = hitBoxLeft;
+  }, [hitBoxLeft]);
+
   const handleCardClick = (idx: number) => () => {
     console.log(idx);
     setShowDimmed(false);
-    inputRef.current?.focus();
   };
-
-  useEffect(() => {
-    window.addEventListener('click', focusOnMob);
-
-    return () => {
-      window.removeEventListener('click', focusOnMob);
-    };
-  }, []);
 
   const handleHitButtonClick = () => {
     hit();
@@ -125,11 +135,6 @@ export const Dungeon = () => {
 
   return (
     <S.Dungeon>
-      <S.KeyboardInput
-        onKeyDown={handleKeyDown}
-        ref={inputRef}
-        autoFocus={true}
-      />
       <S.Mob>
         <img src={mob00Animation} width="100" ref={mobImageUrlRef} />
       </S.Mob>
