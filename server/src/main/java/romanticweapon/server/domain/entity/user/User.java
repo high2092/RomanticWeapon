@@ -33,10 +33,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(columnDefinition = "LONG DEFAULT 1")
+    @Column
     private Long targetUpgrade;
 
-    @Column(columnDefinition = "LONG DEFAULT 99999")
+    @Column
     private Long gold;
 
     @OneToMany(mappedBy = "user")
